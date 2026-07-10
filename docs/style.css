@@ -42,10 +42,18 @@ a {
 
 .topnav {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   padding: 10px 20px;
   font-size: 0.85rem;
+}
+
+.nav-links,
+.lang-switch {
+  display: flex;
+  gap: 4px;
 }
 
 .topnav a {

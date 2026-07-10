@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture Overview – XDragMover</title>
+  <meta name="description" content="How XDragMover works internally: the Quartz Event Services global event monitor, event-tap/controller pipeline, and macOS Accessibility API integration behind its KDE-style window moving and resizing on macOS.">
+  <meta name="keywords" content="XDragMover architecture, macOS Accessibility API, Quartz Event Services, AXUIElement, KDEMoverSizer, macOS window manager internals">
+  <link rel="canonical" href="https://xdragmover.de/architecture.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/architecture.html">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="architecture.html" class="active">Architecture</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="imprint.html">Imprint</a>
+    </div>
+    <div class="lang-switch">
+      <a href="architecture.html" class="active">EN</a>
+      <a href="architecture.de.html">DE</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Architecture Overview</h1>
+    <p class="subtitle">How XDragMover turns a modifier+click gesture into a moved or resized window, entirely through public and lightly-private macOS APIs.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Pipeline</h2>
+      <p>
+        XDragMover runs as a background menu bar app that installs a global event monitor
+        via the Quartz Event Services API, watching modifier-key and mouse state
+        system-wide. When a qualifying gesture is detected, it resolves the target window
+        through the macOS Accessibility API and drives its position or frame directly.
+      </p>
+
+      <div class="arch-diagram">
+        <div class="arch-box">
+          <span class="label">Global Event Monitor</span>
+          <span class="sub">Quartz Event Services</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Event Tap</span>
+          <span class="sub">Move / Resize / Focus taps</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Controller</span>
+          <span class="sub">Gesture &amp; exclusion logic</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Accessibility API</span>
+          <span class="sub">AXUIElement position / size</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Target Window</span>
+          <span class="sub">Any other app's window</span>
+        </div>
+      </div>
+      <p class="arch-side">
+        A shared <code>AppSettings</code> layer (backed by <code>UserDefaults</code>) feeds
+        the active modifier, dwell delay and exclusion patterns into every tap/controller
+        pair live, so changes in Settings apply immediately — no restart required. A
+        <code>StatusMenuController</code> supplies the menu bar item and Settings/Debug
+        windows around this core pipeline.
+      </p>
+    </section>
+
+    <section>
+      <h2>Stages in detail</h2>
+      <ul class="features">
+        <li><strong>Global Event Monitor.</strong> A Quartz Event Services tap observes keyboard modifier flags and mouse button/movement events for the entire system, not just this app's own windows.</li>
+        <li><strong>Event Tap.</strong> <code>WindowMoveEventTap</code>/<code>WindowResizeEventTap</code>/<code>FocusFollowsMouseEventTap</code> each compare incoming events against the configured <code>GestureModifier</code> (any combination of Command/Option/Control/Shift except Shift alone) and forward qualifying events to a testable controller.</li>
+        <li><strong>Controller.</strong> <code>WindowMoveController</code>/<code>WindowResizeController</code> resolve which window is under the cursor, check it against the regex-based exclusion list (matched on the owning app's name), and — if not excluded — track mouse deltas for the duration of the drag.</li>
+        <li><strong>Accessibility API.</strong> Position and size changes are applied directly via <code>AXUIElement</code> attributes (<code>AXWindowHandling</code>), the same mechanism System Settings' Accessibility permission gates.</li>
+        <li><strong>Target Window.</strong> The window being moved or resized belongs to whatever app is under the cursor — XDragMover works uniformly across all standard macOS apps, with no per-app integration required.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Permissions</h2>
+      <p>
+        Because it observes input events system-wide and repositions windows belonging to
+        other applications, XDragMover requires the <strong>Accessibility</strong>
+        permission (System Settings → Privacy &amp; Security → Accessibility), granted
+        once on first launch. No other special entitlements, kernel extensions, or
+        background daemons are used.
+      </p>
+      <p>
+        <a href="index.html">← Back to Home</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="index.html">Home</a> |
+    <a href="disclaimer.html">Disclaimer</a> |
+    <a href="imprint.html">Imprint</a>
+  </footer>
+</body>
+</html>

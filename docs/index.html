@@ -3,15 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XDragMover – Window Resizing & Moving Tool for macOS</title>
-  <meta name="description" content="XDragMover – a lightweight, open-source GPLv3 menu bar utility that brings KDE/Linux-style window moving and resizing to macOS.">
+  <title>XDragMover – KDE-Style Window Moving &amp; Resizing for macOS</title>
+  <meta name="description" content="XDragMover (formerly KDEMoverSizerMacOS / KDESizeMoverMac) is a free, open-source macOS menu bar utility that brings KDE/Linux-style window moving and resizing to macOS Ventura, Sonoma, Sequoia and Tahoe.">
+  <meta name="keywords" content="XDragMover, KDEMoverSizer, KDEMoverSizerMacOS, KDESizeMoverMac, KDE window manager macOS, move window macOS, resize window macOS, drag window without title bar, macOS window manager, macOS Ventura, macOS Sonoma, macOS Sequoia, macOS Tahoe">
+  <link rel="canonical" href="https://xdragmover.de/index.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/index.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="XDragMover – KDE-Style Window Moving & Resizing for macOS">
+  <meta property="og:description" content="Free, open-source macOS menu bar utility bringing KDE/Linux-style window moving and resizing to macOS Ventura, Sonoma, Sequoia and Tahoe.">
+  <meta property="og:url" content="https://xdragmover.de/index.html">
+  <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <nav class="topnav">
-    <a href="index.html" class="active">EN</a>
-    <a href="index.de.html">DE</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="imprint.html">Imprint</a>
+    </div>
+    <div class="lang-switch">
+      <a href="index.html" class="active">EN</a>
+      <a href="index.de.html">DE</a>
+    </div>
   </nav>
 
   <header class="hero">
@@ -20,7 +38,7 @@
 
     <div class="download-buttons">
       <a class="button primary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest">Download DMG</a>
-      <a class="button secondary" href="https://github.com/ralfhartmann/xdragmover">Source Code</a>
+      <a class="button secondary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest/download/source.zip">Download Source</a>
     </div>
   </header>
 
@@ -38,7 +56,10 @@
         and reliable utility inspired by the classic KDE-style window resizing and moving
         tool originally published at
         <a href="https://corz.org/windows/software/accessories/KDE-resizing-moving-for-Windows.php" target="_blank" rel="noopener">corz.org</a>.
-        It runs quietly in the menu bar, with no bloated frameworks and no background daemons.
+        It runs quietly in the menu bar, with no bloated frameworks and no background
+        daemons. The project was previously named <strong>KDEMoverSizerMacOS</strong>
+        (and, before that, <strong>KDESizeMoverMac</strong>) — if you're looking for
+        either of those, you're in the right place.
       </p>
     </section>
 
@@ -55,60 +76,26 @@
     </section>
 
     <section>
-      <h2>Architecture Overview</h2>
+      <h2>How It Works</h2>
       <p>
         XDragMover runs as a background menu bar app that installs a global event monitor
         via the Quartz Event Services API, watching modifier-key and mouse state
         system-wide. When a qualifying gesture is detected, it resolves the target window
         through the macOS Accessibility API and drives its position or frame directly.
-      </p>
-
-      <div class="arch-diagram">
-        <div class="arch-box">
-          <span class="label">Global Event Monitor</span>
-          <span class="sub">Quartz Event Services</span>
-        </div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-box">
-          <span class="label">Event Tap</span>
-          <span class="sub">Move / Resize / Focus taps</span>
-        </div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-box">
-          <span class="label">Controller</span>
-          <span class="sub">Gesture &amp; exclusion logic</span>
-        </div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-box">
-          <span class="label">Accessibility API</span>
-          <span class="sub">AXUIElement position / size</span>
-        </div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-box">
-          <span class="label">Target Window</span>
-          <span class="sub">Any other app's window</span>
-        </div>
-      </div>
-      <p class="arch-side">
-        A shared <code>AppSettings</code> layer (backed by <code>UserDefaults</code>) feeds
-        the active modifier, dwell delay and exclusion patterns into every tap/controller
-        pair live, so changes in Settings apply immediately — no restart required. A
-        <code>StatusMenuController</code> supplies the menu bar item and Settings/Debug
-        windows around this core pipeline.
-      </p>
-
-      <p>
         Because it observes input events system-wide and repositions windows belonging to
         other applications, XDragMover requires the <strong>Accessibility</strong>
         permission (System Settings → Privacy &amp; Security → Accessibility), granted
         once on first launch.
+      </p>
+      <p>
+        <a href="architecture.html">Read the full architecture overview →</a>
       </p>
     </section>
 
     <section>
       <h2>Requirements</h2>
       <ul>
-        <li>macOS 13 Ventura or later</li>
+        <li>macOS 13 Ventura, macOS 14 Sonoma, macOS 15 Sequoia, macOS 26 Tahoe, or later</li>
         <li>Accessibility permission granted to the app</li>
       </ul>
     </section>
@@ -116,12 +103,13 @@
     <section>
       <h2>Project &amp; License</h2>
       <p>
-        The full source code, development history and issue tracker live in the main
-        repository: <a href="https://github.com/ralfhartmann/xdragmover" target="_blank" rel="noopener">github.com/ralfhartmann/xdragmover</a>.
-        This site and its releases are published from
+        Every tagged release publishes the buildable "Corresponding Source" required by
+        GPLv3 §6 right alongside its signed <code>.dmg</code>: grab
+        <code>source.zip</code> from the same
+        <a href="https://github.com/ralfhartmann/xdragmover-release/releases/latest" target="_blank" rel="noopener">release</a>
+        as the installer. The primary development repository is private; this repository,
         <a href="https://github.com/ralfhartmann/xdragmover-release" target="_blank" rel="noopener">xdragmover-release</a>,
-        which always carries the buildable "Corresponding Source" alongside the signed
-        <code>.dmg</code> for the license below.
+        is the public home for signed builds and their corresponding source.
       </p>
       <p>
         XDragMover is licensed under the <strong>GNU General Public License v3.0</strong>.
@@ -130,6 +118,7 @@
   </main>
 
   <footer>
+    <a href="architecture.html">Architecture</a> |
     <a href="disclaimer.html">Disclaimer</a> |
     <a href="imprint.html">Imprint</a>
   </footer>

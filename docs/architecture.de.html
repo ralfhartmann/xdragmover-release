@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architekturübersicht – XDragMover</title>
+  <meta name="description" content="Wie XDragMover intern funktioniert: der systemweite Event-Monitor über Quartz Event Services, die Event-Tap-/Controller-Pipeline und die Anbindung an die macOS-Accessibility-API hinter dem KDE-typischen Fensterverschieben und -vergrößern unter macOS.">
+  <meta name="keywords" content="XDragMover Architektur, macOS Accessibility API, Quartz Event Services, AXUIElement, KDEMoverSizer, macOS Fenstermanager intern">
+  <link rel="canonical" href="https://xdragmover.de/architecture.de.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/architecture.html">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.de.html">Start</a>
+      <a href="architecture.de.html" class="active">Architektur</a>
+      <a href="disclaimer.de.html">Haftungsausschluss</a>
+      <a href="imprint.de.html">Impressum</a>
+    </div>
+    <div class="lang-switch">
+      <a href="architecture.html">EN</a>
+      <a href="architecture.de.html" class="active">DE</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Architekturübersicht</h1>
+    <p class="subtitle">Wie XDragMover aus einer Modifikator+Klick-Geste ein verschobenes oder vergrößertes Fenster macht — ausschließlich über öffentliche und leicht-private macOS-APIs.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Pipeline</h2>
+      <p>
+        XDragMover läuft als Hintergrund-App in der Menüleiste und installiert über die
+        Quartz-Event-Services-API einen systemweiten Event-Monitor, der Modifikatortasten
+        und Mausstatus beobachtet. Wird eine passende Geste erkannt, ermittelt die App das
+        Zielfenster über die macOS-Accessibility-API und steuert dessen Position bzw.
+        Größe direkt an.
+      </p>
+
+      <div class="arch-diagram">
+        <div class="arch-box">
+          <span class="label">Globaler Event-Monitor</span>
+          <span class="sub">Quartz Event Services</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Event Tap</span>
+          <span class="sub">Move-/Resize-/Focus-Taps</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Controller</span>
+          <span class="sub">Gesten- &amp; Ausschlusslogik</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Accessibility-API</span>
+          <span class="sub">AXUIElement Position / Größe</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Zielfenster</span>
+          <span class="sub">Fenster einer beliebigen App</span>
+        </div>
+      </div>
+      <p class="arch-side">
+        Eine gemeinsame <code>AppSettings</code>-Schicht (auf Basis von
+        <code>UserDefaults</code>) speist Modifikator, Verweildauer und Ausschlussmuster
+        live in jedes Tap-/Controller-Paar ein — Änderungen in den Einstellungen wirken
+        sofort, ohne Neustart. Ein <code>StatusMenuController</code> stellt das
+        Menüleisten-Symbol sowie die Einstellungs-/Debug-Fenster rund um diese
+        Kernpipeline bereit.
+      </p>
+    </section>
+
+    <section>
+      <h2>Die Stufen im Detail</h2>
+      <ul class="features">
+        <li><strong>Globaler Event-Monitor.</strong> Ein Quartz-Event-Services-Tap beobachtet Modifikator-Flags sowie Maustasten-/Bewegungsereignisse systemweit, nicht nur innerhalb der eigenen Fenster.</li>
+        <li><strong>Event Tap.</strong> <code>WindowMoveEventTap</code>/<code>WindowResizeEventTap</code>/<code>FocusFollowsMouseEventTap</code> vergleichen eingehende Ereignisse mit dem konfigurierten <code>GestureModifier</code> (beliebige Kombination aus Command/Option/Control/Shift außer Shift allein) und leiten passende Ereignisse an einen testbaren Controller weiter.</li>
+        <li><strong>Controller.</strong> <code>WindowMoveController</code>/<code>WindowResizeController</code> ermitteln, welches Fenster sich unter dem Mauszeiger befindet, prüfen es gegen die regex-basierte Ausschlussliste (abgeglichen mit dem Namen der besitzenden App) und verfolgen — falls nicht ausgeschlossen — die Mausbewegung für die Dauer der Geste.</li>
+        <li><strong>Accessibility-API.</strong> Positions- und Größenänderungen werden direkt über <code>AXUIElement</code>-Attribute (<code>AXWindowHandling</code>) angewendet — derselbe Mechanismus, den die Bedienungshilfen-Berechtigung in den Systemeinstellungen absichert.</li>
+        <li><strong>Zielfenster.</strong> Das verschobene oder vergrößerte Fenster gehört zu der App, die sich gerade unter dem Mauszeiger befindet — XDragMover funktioniert einheitlich mit allen gängigen macOS-Apps, ohne app-spezifische Integration.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Berechtigungen</h2>
+      <p>
+        Da systemweit Eingabeereignisse beobachtet und Fenster fremder Apps neu
+        positioniert werden, benötigt XDragMover die
+        <strong>Bedienungshilfen</strong>-Berechtigung (Systemeinstellungen →
+        Datenschutz &amp; Sicherheit → Bedienungshilfen), die beim ersten Start einmalig
+        erteilt wird. Weitere besondere Berechtigungen, Kernel-Extensions oder
+        Hintergrunddienste werden nicht verwendet.
+      </p>
+      <p>
+        <a href="index.de.html">← Zurück zur Startseite</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="index.de.html">Start</a> |
+    <a href="disclaimer.de.html">Haftungsausschluss</a> |
+    <a href="imprint.de.html">Impressum</a>
+  </footer>
+</body>
+</html>
