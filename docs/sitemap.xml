@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://xdragmover.de/index.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/index.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/index.de.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/index.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/architecture.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/architecture.de.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/disclaimer.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/disclaimer.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/disclaimer.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/disclaimer.de.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/disclaimer.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/disclaimer.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/imprint.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/imprint.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/imprint.de.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/imprint.de.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/imprint.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/imprint.de.html"/>
+  </url>
+</urlset>
