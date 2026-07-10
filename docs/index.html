@@ -2,58 +2,132 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>xdragmover – Window Resizing & Moving Tool for macOS</title>
-  <meta name="description" content="xdragmover – a lightweight GPLv3 tool for KDE-style window resizing and moving on macOS.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XDragMover – Window Resizing & Moving Tool for macOS</title>
+  <meta name="description" content="XDragMover – a lightweight, open-source GPLv3 menu bar utility that brings KDE/Linux-style window moving and resizing to macOS.">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <nav class="topnav">
+    <a href="index.html" class="active">EN</a>
+    <a href="index.de.html">DE</a>
+  </nav>
+
   <header class="hero">
-    <h1>xdragmover</h1>
-    <p class="subtitle">A lightweight, open-source tool bringing KDE-style window resizing & moving to macOS.</p>
+    <h1>XDragMover</h1>
+    <p class="subtitle">A lightweight, open-source menu bar utility that brings KDE/Linux-style window moving &amp; resizing to macOS — move or resize any window from anywhere on its surface, no title bar or resize handle required.</p>
 
     <div class="download-buttons">
       <a class="button primary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest">Download DMG</a>
-      <a class="button secondary" href="https://github.com/ralfhartmann/xdragmover-release">Source Code</a>
+      <a class="button secondary" href="https://github.com/ralfhartmann/xdragmover">Source Code</a>
     </div>
   </header>
 
-  <section>
-    <h2>What is xdragmover?</h2>
-    <p>
-      xdragmover is a small, fast and reliable macOS utility inspired by the classic KDE-style
-      window resizing and moving tool originally published at 
-      <a href="https://corz.org/windows/software/accessories/KDE-resizing-moving-for-Windows.php" target="_blank">
-        corz.org
-      </a>.
-      It brings intuitive mouse-based window control to macOS without bloated frameworks or background daemons.
-    </p>
-  </section>
+  <main>
+    <section>
+      <h2>What is XDragMover?</h2>
+      <p>
+        On many Linux desktop environments (KDE, GNOME, etc.), holding a modifier key
+        while pressing the mouse anywhere inside a window lets you drag it around, and
+        holding the same modifier with the right mouse button lets you resize it from the
+        nearest corner. macOS has no built-in equivalent.
+      </p>
+      <p>
+        XDragMover recreates that familiar, efficient workflow on macOS — a small, fast
+        and reliable utility inspired by the classic KDE-style window resizing and moving
+        tool originally published at
+        <a href="https://corz.org/windows/software/accessories/KDE-resizing-moving-for-Windows.php" target="_blank" rel="noopener">corz.org</a>.
+        It runs quietly in the menu bar, with no bloated frameworks and no background daemons.
+      </p>
+    </section>
 
-  <section>
-    <h2>Features</h2>
-    <ul class="features">
-      <li><strong>Lightweight:</strong> Minimal resource usage, instant response.</li>
-      <li><strong>GPLv3:</strong> Fully open-source and community-friendly.</li>
-      <li><strong>Native macOS:</strong> No hacks, no kernel extensions. (Uses some undocumented APIs.)</li>
-      <li><strong>Configurable:</strong> Adjust hotkeys and behavior to your workflow.</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Features</h2>
+      <ul class="features">
+        <li><strong>Move with a modifier + left click.</strong> Hold the configured modifier (default <code>⌘</code>) and drag anywhere inside a window — it follows the mouse 1:1 until you let go.</li>
+        <li><strong>Resize with a modifier + right click.</strong> The window corner nearest your click becomes the resize handle, exactly as if you'd grabbed it directly.</li>
+        <li><strong>Configurable focus-follows-mouse.</strong> Optionally give input focus to the window under the cursor once it's been stationary for a short, adjustable dwell time (experimental).</li>
+        <li><strong>Exclude specific apps.</strong> A regex-based exclusion list — filled via an "Add from Open Windows…" picker or typed by hand — permanently protects chosen apps from move/resize.</li>
+        <li><strong>Configurable modifier.</strong> Any combination of Command/Option/Control/Shift (Shift alone excluded) — adjust it to fit your workflow.</li>
+        <li><strong>Lightweight &amp; native.</strong> No kernel extensions, no hacks — just the macOS Accessibility and Quartz Event Services APIs.</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Screenshots</h2>
-    <p>Coming soon — you can add screenshots here once your first public release is ready.</p>
-  </section>
+    <section>
+      <h2>Architecture Overview</h2>
+      <p>
+        XDragMover runs as a background menu bar app that installs a global event monitor
+        via the Quartz Event Services API, watching modifier-key and mouse state
+        system-wide. When a qualifying gesture is detected, it resolves the target window
+        through the macOS Accessibility API and drives its position or frame directly.
+      </p>
 
-  <section>
-    <h2>Project Repository</h2>
-    <p>
-      The full source code, issue tracker and release history are available on GitHub:
-      <a href="https://github.com/ralfhartmann/xdragmover-release" target="_blank">
-        xdragmover-release
-      </a>.
-    </p>
-  </section>
+      <div class="arch-diagram">
+        <div class="arch-box">
+          <span class="label">Global Event Monitor</span>
+          <span class="sub">Quartz Event Services</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Event Tap</span>
+          <span class="sub">Move / Resize / Focus taps</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Controller</span>
+          <span class="sub">Gesture &amp; exclusion logic</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Accessibility API</span>
+          <span class="sub">AXUIElement position / size</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Target Window</span>
+          <span class="sub">Any other app's window</span>
+        </div>
+      </div>
+      <p class="arch-side">
+        A shared <code>AppSettings</code> layer (backed by <code>UserDefaults</code>) feeds
+        the active modifier, dwell delay and exclusion patterns into every tap/controller
+        pair live, so changes in Settings apply immediately — no restart required. A
+        <code>StatusMenuController</code> supplies the menu bar item and Settings/Debug
+        windows around this core pipeline.
+      </p>
+
+      <p>
+        Because it observes input events system-wide and repositions windows belonging to
+        other applications, XDragMover requires the <strong>Accessibility</strong>
+        permission (System Settings → Privacy &amp; Security → Accessibility), granted
+        once on first launch.
+      </p>
+    </section>
+
+    <section>
+      <h2>Requirements</h2>
+      <ul>
+        <li>macOS 13 Ventura or later</li>
+        <li>Accessibility permission granted to the app</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Project &amp; License</h2>
+      <p>
+        The full source code, development history and issue tracker live in the main
+        repository: <a href="https://github.com/ralfhartmann/xdragmover" target="_blank" rel="noopener">github.com/ralfhartmann/xdragmover</a>.
+        This site and its releases are published from
+        <a href="https://github.com/ralfhartmann/xdragmover-release" target="_blank" rel="noopener">xdragmover-release</a>,
+        which always carries the buildable "Corresponding Source" alongside the signed
+        <code>.dmg</code> for the license below.
+      </p>
+      <p>
+        XDragMover is licensed under the <strong>GNU General Public License v3.0</strong>.
+      </p>
+    </section>
+  </main>
 
   <footer>
     <a href="disclaimer.html">Disclaimer</a> |
