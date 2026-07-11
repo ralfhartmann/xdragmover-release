@@ -141,6 +141,15 @@ h2 {
   padding-bottom: 8px;
 }
 
+main ol {
+  padding-left: 1.4em;
+}
+
+main ol li {
+  margin-bottom: 12px;
+  padding-left: 6px;
+}
+
 .features {
   list-style: none;
   padding: 0;
