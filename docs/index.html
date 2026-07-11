@@ -64,6 +64,38 @@
     </section>
 
     <section>
+      <h2>Installation</h2>
+      <ol>
+        <li>Click <strong>Download DMG</strong> above.</li>
+        <li>Open the downloaded <code>XDragMover.dmg</code> and drag <strong>XDragMover.app</strong> into the <strong>Applications</strong> folder.</li>
+        <li>
+          Launch XDragMover from Applications or Spotlight. Since it isn't
+          distributed through the App Store, macOS Gatekeeper will block the
+          very first launch with a warning that it's from an unidentified
+          developer — <strong>this is expected</strong>.
+        </li>
+        <li>
+          Open <strong>System Settings → Privacy &amp; Security</strong>,
+          scroll down to the Security section, and click
+          <strong>"Open Anyway"</strong> next to the mention of XDragMover.
+          Confirm once more in the dialog that appears. (Alternatively:
+          Control-click the app in Finder and choose <strong>Open</strong>
+          instead of double-clicking.)
+        </li>
+        <li>
+          Launch XDragMover again — it now starts normally. It runs quietly
+          as a menu bar item with no Dock icon or window of its own.
+        </li>
+        <li>
+          Grant the <strong>Accessibility</strong> permission when prompted
+          (System Settings → Privacy &amp; Security → Accessibility) — required
+          for XDragMover to move and resize other apps' windows; see
+          <a href="architecture.html">Architecture Overview</a> for why.
+        </li>
+      </ol>
+    </section>
+
+    <section>
       <h2>Features</h2>
       <ul class="features">
         <li><strong>Move with a modifier + left click.</strong> Hold the configured modifier (default <code>⌘</code>) and drag anywhere inside a window — it follows the mouse 1:1 until you let go.</li>
