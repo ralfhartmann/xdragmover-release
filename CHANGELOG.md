@@ -5,7 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.4.0] - 2026-07-13
+
+### Added
+
+- German, Russian, and French localization. XDragMover's UI (Settings,
+  menu bar, alerts) now follows the system language via a String
+  Catalog; falls back to English for any other language.
 
 ### Fixed
 
