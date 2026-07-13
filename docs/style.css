@@ -102,6 +102,16 @@ a {
   margin-top: 20px;
 }
 
+.version-note {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.version-note a {
+  color: inherit;
+}
+
 .button {
   display: inline-block;
   padding: 12px 24px;
