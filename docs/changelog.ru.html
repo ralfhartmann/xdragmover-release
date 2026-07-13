@@ -10,6 +10,7 @@
   <link rel="alternate" hreflang="de" href="https://xdragmover.de/changelog.de.html">
   <link rel="alternate" hreflang="ru" href="https://xdragmover.de/changelog.ru.html">
   <link rel="alternate" hreflang="fr" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="es" href="https://xdragmover.de/changelog.es.html">
   <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/changelog.html">
   <link rel="icon" type="image/png" href="favicon-32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -31,6 +32,7 @@
       <a href="changelog.de.html">DE</a>
       <a href="changelog.ru.html" class="active">RU</a>
       <a href="changelog.fr.html">FR</a>
+      <a href="changelog.es.html">ES</a>
     </div>
   </nav>
 
@@ -41,6 +43,14 @@
 
   <main>
     <section class="changelog-list">
+      <div class="changelog-entry">
+        <h3>3.4.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Исправлено</h4>
+        <ul>
+          <li>При запуске могло без запроса появляться пустое окно с заголовком «XDragMover Settings» — наиболее стабильно при запуске как элемента входа в систему, изредка также при ручном перезапуске. Вызвано тем, что SwiftUI автоматически показывает заглушку-сцену Settings приложения, и/или тем, что восстановление состояния окон AppKit заново открывает окно, которое было открыто ранее. Исправлено закрытием при запуске любого окна, которое AppKit/SwiftUI открывает самостоятельно.</li>
+        </ul>
+      </div>
+
       <div class="changelog-entry">
         <h3>3.4.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Добавлено</h4>

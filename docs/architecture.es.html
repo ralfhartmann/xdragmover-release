@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resumen de la arquitectura – XDragMover</title>
+  <meta name="description" content="Cómo funciona XDragMover internamente: el monitor de eventos global de Quartz Event Services, la canalización event-tap/controlador, y la integración con la API de Accesibilidad de macOS detrás de su forma de mover y redimensionar ventanas al estilo KDE en macOS.">
+  <meta name="keywords" content="arquitectura de XDragMover, API de Accesibilidad de macOS, Quartz Event Services, AXUIElement, KDEMoverSizer, funcionamiento interno del gestor de ventanas de macOS">
+  <link rel="canonical" href="https://xdragmover.de/architecture.es.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html">
+  <link rel="alternate" hreflang="es" href="https://xdragmover.de/architecture.es.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/architecture.html">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.es.html">Inicio</a>
+      <a href="architecture.es.html" class="active">Arquitectura</a>
+      <a href="disclaimer.es.html">Exención de responsabilidad</a>
+      <a href="privacy.es.html">Privacidad</a>
+      <a href="changelog.es.html">Changelog</a>
+      <a href="imprint.es.html">Aviso legal</a>
+    </div>
+    <div class="lang-switch">
+      <a href="architecture.html">EN</a>
+      <a href="architecture.de.html">DE</a>
+      <a href="architecture.ru.html">RU</a>
+      <a href="architecture.fr.html">FR</a>
+      <a href="architecture.es.html" class="active">ES</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Resumen de la arquitectura</h1>
+    <p class="subtitle">Cómo XDragMover convierte un gesto de modificador+clic en una ventana movida o redimensionada, todo mediante APIs públicas de macOS y algunas ligeramente privadas.</p>
+  </header>
+
+  <main>
+
+    <section>
+      <h2>Canalización (pipeline)</h2>
+      <p>
+        XDragMover se ejecuta como una app de barra de menú en segundo plano que instala un
+        monitor de eventos global a través de la API Quartz Event Services, observando el
+        estado de las teclas modificadoras y del ratón en todo el sistema. Cuando se detecta
+        un gesto que cumple las condiciones, resuelve la ventana objetivo mediante la API de
+        Accesibilidad de macOS y controla directamente su posición o su marco.
+      </p>
+
+      <div class="arch-diagram">
+        <div class="arch-box">
+          <span class="label">Monitor de eventos global</span>
+          <span class="sub">Quartz Event Services</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Event Tap</span>
+          <span class="sub">Taps de mover / redimensionar / foco</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Controlador</span>
+          <span class="sub">Lógica de gestos y exclusión</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">API de Accesibilidad</span>
+          <span class="sub">Posición / tamaño de AXUIElement</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Ventana objetivo</span>
+          <span class="sub">Ventana de cualquier otra app</span>
+        </div>
+      </div>
+      <p class="arch-side">
+        Una capa compartida <code>AppSettings</code> (respaldada por <code>UserDefaults</code>)
+        alimenta en vivo el modificador activo, el tiempo de espera y los patrones de exclusión
+        a cada par tap/controlador, de modo que los cambios en Ajustes se aplican de inmediato
+        — sin necesidad de reiniciar. Un <code>StatusMenuController</code> proporciona el
+        elemento de la barra de menú y las ventanas de Ajustes/Depuración alrededor de esta
+        canalización central.
+      </p>
+    </section>
+
+    <section>
+      <h2>Etapas en detalle</h2>
+      <ul class="features">
+        <li><strong>Monitor de eventos global.</strong> Un tap de Quartz Event Services observa las teclas modificadoras y los eventos de botón/movimiento del ratón para todo el sistema, no solo las ventanas propias de esta app.</li>
+        <li><strong>Event Tap.</strong> <code>WindowMoveEventTap</code>/<code>WindowResizeEventTap</code>/<code>FocusFollowsMouseEventTap</code> comparan cada evento entrante con el <code>GestureModifier</code> configurado (cualquier combinación de Comando/Opción/Control/Mayúsculas, excepto Mayúsculas solo) y reenvían los eventos que cumplen las condiciones a un controlador comprobable.</li>
+        <li><strong>Controlador.</strong> <code>WindowMoveController</code>/<code>WindowResizeController</code> resuelven qué ventana está bajo el cursor, la comprueban contra la lista de exclusión basada en expresiones regulares (comparada con el nombre de la app propietaria) y — si no está excluida — rastrean los deltas del ratón durante todo el arrastre.</li>
+        <li><strong>API de Accesibilidad.</strong> Los cambios de posición y tamaño se aplican directamente mediante atributos de <code>AXUIElement</code> (<code>AXWindowHandling</code>), el mismo mecanismo que controla el permiso de Accesibilidad de Ajustes del Sistema.</li>
+        <li><strong>Ventana objetivo.</strong> La ventana que se mueve o redimensiona pertenece a la app que esté bajo el cursor — XDragMover funciona de manera uniforme en todas las apps estándar de macOS, sin necesitar integración específica por app.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Permisos</h2>
+      <p>
+        Debido a que observa eventos de entrada en todo el sistema y reposiciona ventanas
+        pertenecientes a otras aplicaciones, XDragMover requiere el permiso de
+        <strong>Accesibilidad</strong> (Ajustes del Sistema → Privacidad y seguridad →
+        Accesibilidad), concedido una sola vez al primer inicio. No se usan otros permisos
+        especiales, extensiones de kernel ni daemons en segundo plano.
+      </p>
+      <p>
+        <a href="index.es.html">← Volver al inicio</a>
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="index.es.html">Inicio</a> |
+    <a href="disclaimer.es.html">Exención de responsabilidad</a> |
+    <a href="privacy.es.html">Privacidad</a> |
+    <a href="changelog.es.html">Changelog</a> |
+    <a href="imprint.es.html">Aviso legal</a>
+  </footer>
+</body>
+</html>

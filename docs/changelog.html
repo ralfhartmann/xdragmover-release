@@ -10,6 +10,7 @@
   <link rel="alternate" hreflang="de" href="https://xdragmover.de/changelog.de.html">
   <link rel="alternate" hreflang="ru" href="https://xdragmover.de/changelog.ru.html">
   <link rel="alternate" hreflang="fr" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="es" href="https://xdragmover.de/changelog.es.html">
   <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/changelog.html">
   <link rel="icon" type="image/png" href="favicon-32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -31,6 +32,7 @@
       <a href="changelog.de.html">DE</a>
       <a href="changelog.ru.html">RU</a>
       <a href="changelog.fr.html">FR</a>
+      <a href="changelog.es.html">ES</a>
     </div>
   </nav>
 
@@ -41,6 +43,14 @@
 
   <main>
     <section class="changelog-list">
+      <div class="changelog-entry">
+        <h3>3.4.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Fixed</h4>
+        <ul>
+          <li>An empty "XDragMover Settings" window could appear unrequested at launch — most reliably when launched as a login item, occasionally on a manual relaunch too. Caused by SwiftUI auto-showing the app's placeholder Settings scene and/or AppKit's window-state restoration reopening a previously-open window. Fixed by closing any window AppKit/SwiftUI opens on its own at launch.</li>
+        </ul>
+      </div>
+
       <div class="changelog-entry">
         <h3>3.4.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Added</h4>

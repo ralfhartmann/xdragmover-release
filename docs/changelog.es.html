@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changelog – XDragMover</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://xdragmover.de/changelog.es.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/changelog.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/changelog.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/changelog.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="es" href="https://xdragmover.de/changelog.es.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/changelog.html">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.es.html">Inicio</a>
+      <a href="architecture.es.html">Arquitectura</a>
+      <a href="disclaimer.es.html">Exención de responsabilidad</a>
+      <a href="privacy.es.html">Privacidad</a>
+      <a href="changelog.es.html" class="active">Changelog</a>
+      <a href="imprint.es.html">Aviso legal</a>
+    </div>
+    <div class="lang-switch">
+      <a href="changelog.html">EN</a>
+      <a href="changelog.de.html">DE</a>
+      <a href="changelog.ru.html">RU</a>
+      <a href="changelog.fr.html">FR</a>
+      <a href="changelog.es.html" class="active">ES</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Changelog</h1>
+    <p class="subtitle">Cada cambio notable en XDragMover, release por release.</p>
+  </header>
+
+  <main>
+    <section class="changelog-list">
+      <div class="changelog-entry">
+        <h3>3.4.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Podía aparecer sin haberlo solicitado una ventana vacía titulada «XDragMover Settings» al iniciar — de forma más fiable al iniciarse como elemento de inicio de sesión, y ocasionalmente también al reiniciar manualmente. Causado por que SwiftUI muestra automáticamente la escena Settings de marcador de posición de la app, y/o porque la restauración del estado de ventanas de AppKit reabre una ventana que estaba abierta anteriormente. Corregido cerrando al iniciar cualquier ventana que AppKit/SwiftUI abra por sí mismo.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.4.0 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Localización al alemán, ruso y francés. La interfaz de XDragMover (Ajustes, barra de menú, alertas) ahora sigue el idioma del sistema mediante un String Catalog; recurre al inglés para cualquier otro idioma.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Eliminar un patrón en la pestaña "Ventanas excluidas" de Ajustes podía hacer que la app se bloqueara cuando no era el último de la lista — un índice de array obsoleto capturado por el campo de texto de otra fila aún visible. Reproducido en vivo y corregido.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.3.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Cambiado</h4>
+        <ul>
+          <li>El identificador del paquete cambió del marcador de posición <code>com.example.XDragMover</code> a <code>de.xdragmover</code> (<code>de.xdragmover.tests</code> para el destino de pruebas) — la forma DNS inversa del propio dominio de este proyecto, xdragmover.de. Cualquiera con una compilación anterior instalada tendrá que volver a conceder el acceso de Accesibilidad una vez, ya que macOS vincula ese permiso al identificador del paquete.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li><code>make dmg</code> fallaba al firmar el contenedor <code>.dmg</code> en el GitLab Runner ("The following argument was not expected: --timestamp") porque su PATH no interactivo resolvía un binario distinto y no relacionado llamado <code>codesign</code> antes que el real de Apple — ahora llama explícitamente a <code>/usr/bin/codesign</code>, evitando por completo la resolución por PATH.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.3.0 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Clic central en el icono de una app en el Dock para abrir una nueva ventana/instancia de ella (US-16). Desactivado por defecto; se activa en Ajustes → Gestos → "Clic central en icono del Dock para nueva instancia".</li>
+        </ul>
+        <h4>Cambiado</h4>
+        <ul>
+          <li>Se restauró el icono de la app (Dock/Finder/paquete <code>.app</code>), usando un nuevo diseño (<code>assets/logo.png</code>) en lugar del eliminado en la 3.1.0 por preocupaciones de marca registrada.</li>
+          <li>Las compilaciones de release ahora se firman con una identidad "Developer ID Application" de pago y se notarizan y grapan (staple), de modo que una máquina que nunca ha ejecutado esta app deja de ver la advertencia de Gatekeeper de "desarrollador no identificado" — consulta la sección "Notarización" de <code>DEVELOPMENT.md</code>.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Hacer clic central en el icono de Finder en el Dock mientras Finder ya estaba en ejecución (es decir, prácticamente siempre) fallaba directamente con "The application "Finder.app" can't be opened." en lugar de abrir una nueva ventana (US-16). Ahora, al hacer clic central en el icono del Dock de una app ya en ejecución, se pulsa directamente el propio elemento de menú "New Window" de esa app mediante la API de Accesibilidad cuando lo tiene (cubre Finder y la mayoría de apps basadas en ventanas, p. ej. iTerm2), en lugar de intentar forzar una nueva instancia; las apps sin ese elemento de menú (p. ej. apps basadas en documentos como TextEdit) siguen abriendo una nueva instancia como antes.</li>
+          <li>Hacer clic central en el icono de iTerm2 en el Dock generaba todo un nuevo proceso pesado (su propio daemon de shell/sesión) por clic, en lugar de solo una nueva ventana en la app ya abierta (US-16); corregido mediante la misma pulsación del elemento de menú "New Window" descrita arriba.</li>
+          <li>Al hacer clic central en un icono del Dock, el propio menú contextual del icono en el Dock podía quedar abierto en pantalla junto con la nueva ventana/instancia (US-16); ahora el clic central se consume cuando esta función actúa sobre él.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.2.0 <span class="changelog-date">2026-07-11</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Comprobación de actualizaciones opcional (Ajustes → General → "Comprobar actualizaciones", desactivada por defecto). Cuando está activada, comprueba el repositorio público de releases 5 minutos después del inicio y una vez al día a partir de entonces; si encuentra una versión más reciente, muestra un diálogo con un botón "Descargar" que enlaza directamente al nuevo <code>.dmg</code>.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.1.0 <span class="changelog-date">2026-07-09</span></h3>
+        <h4>Cambiado</h4>
+        <ul>
+          <li>Se eliminó temporalmente el icono de app personalizado añadido en la 3.0.0 (su diseño incorporaba la silueta del logo de Apple, una posible preocupación de marca registrada); la app ahora recurre al icono por defecto generado por macOS hasta que haya un diseño de reemplazo listo.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.0.0 <span class="changelog-date">2026-07-09</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Ventanas excluidas (Ajustes): una lista de patrones de expresión regular comparados con el nombre de una app — cualquier app en la lista nunca podrá moverse ni redimensionarse. Las entradas normalmente se añaden mediante "Añadir desde ventanas abiertas…", un selector que lista las apps actualmente abiertas y genera un patrón de coincidencia exacta (p. ej. <code>^Calculator$</code>) para la elegida; cada patrón sigue siendo editable como texto plano después ("Añadir patrón" añade una fila en blanco), y las expresiones regulares inválidas se muestran en rojo sin bloquear nada.</li>
+          <li>Consola de depuración: un botón "Bloqueo de desplazamiento". Desactivado (por defecto, persistido) mantiene la consola desplazada hasta la línea más reciente a medida que llegan nuevas entradas, igual que antes. Activado permite desplazarse libremente por el historial sin ser arrastrado de vuelta al final en cada nueva línea de registro.</li>
+          <li>Foco sigue al ratón ahora muestra una advertencia única ("Foco sigue al ratón es experimental…", con una casilla "No volver a mostrar esto") la primera vez que se activa en Ajustes, explicando que depende de un mecanismo de macOS no documentado y puede comportarse de forma poco fiable en algunas apps. El README ahora también lo menciona explícitamente en lugar de solo insinuarlo. La pestaña de Foco sigue al ratón además muestra esta advertencia de forma permanente (no solo una vez), de modo que es visible cada vez que se abre esa pestaña, no solo la primera vez.</li>
+        </ul>
+        <h4>Cambiado</h4>
+        <ul>
+          <li>Proyecto renombrado: <strong>KDEMoverSizerMacOS</strong> → <strong>XDragMover</strong>. Afecta al slug/remoto del proyecto de GitLab, al proyecto/destinos/esquema de Xcode, a ambos identificadores de paquete (ahora <code>com.example.XDragMover</code>/<code>...Tests</code>) y a toda referencia en código fuente/documentación/scripts. Igual que con el renombrado anterior (2.0.0), el cambio de identificador de paquete hace que las instalaciones existentes pierdan sus Ajustes persistidos (nuevo dominio de <code>UserDefaults</code>) y necesiten volver a conceder el permiso de Accesibilidad una vez tras actualizar. Cambio incompatible para las instalaciones existentes, de ahí el incremento de versión mayor en este release.</li>
+          <li>Icono de la app reemplazado por un nuevo diseño que combina la silueta arcoíris del logo de Apple, la "X" de X.Org (de <code>assets/X.Org_Logo.png</code>) y la cruz de flechas de movimiento, regenerado en todos los tamaños del idioma <code>mac</code> (16–1024px).</li>
+          <li>La ventana de Ajustes se reorganizó en pestañas (General, Gestos, Ventanas excluidas, Foco sigue al ratón, Acerca de) mediante un control segmentado, en lugar de una larga lista con desplazamiento con todas las secciones apiladas verticalmente.</li>
+          <li>"Acerca de XDragMover" (barra de menú) ahora abre la pestaña "Acerca de" de la ventana de Ajustes (última pestaña) en lugar de una alerta modal separada — el botón "Mostrar consola de depuración" se trasladó con ella. Hacer clic en "Acerca de" mientras Ajustes ya está abierto en otra pestaña la cambia a Acerca de, en lugar de dejarla en la pestaña que estuviera mostrando.</li>
+          <li>Licencias: se añadieron <code>LICENSE</code> (GPLv3) y <code>LICENSING.md</code> explicando el acuerdo de doble licencia que mantiene posible un futuro lanzamiento en la App Store de Apple; se acreditó a Ralf Hartmann como autor en el README y en la cadena de copyright de la app.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>El botón "Bloqueo de desplazamiento" de la consola de depuración se veía igual (un fondo gris neutro plano) estuviera activado o no, solo cambiaba el pequeño glifo del candado — fácil de pasar por alto, así que parecía inactivo incluso estando activado. Ahora se rellena con el color de acento mientras está bloqueado, igual que otros botones de alternancia de barra de herramientas de macOS indican un estado activo/pulsado.</li>
+          <li>Ventana de Ajustes: el primer elemento ("Iniciar al iniciar sesión") y los botones Cancelar/OK se habían encogido hasta quedar pegados a los bordes superior/inferior de la ventana a medida que se añadían más secciones con el tiempo, ya que todo compartía una única pila de altura fija sin desplazamiento. Las secciones de ajustes ahora se desplazan de forma independiente dentro de la ventana, con Cancelar/OK fijados en un pie de página siempre con relleno completo bajo un separador — ambos extremos mantienen el espaciado previsto sin importar cuánto contenido haya arriba.</li>
+          <li>El control deslizante del retardo de foco-sigue-al-ratón era difícil de ajustar a un valor preciso — su paso de 10ms comprimía 95 posiciones discretas en un control de arrastre estrecho, fácil de sobrepasar. Se añadió un <code>Stepper</code> junto a él para ajustes exactos de ±10ms mediante clic o mantener pulsado; el control deslizante se mantiene para el posicionamiento rápido y grueso.</li>
+          <li>Mover/redimensionar (y foco-sigue-al-ratón) permanecían rotos silenciosamente durante toda una sesión si el permiso de Accesibilidad no se había concedido aún en el momento exacto del inicio — una condición de carrera habitual con el aviso del sistema, y garantizada tras cualquier cambio de identificador de paquete (p. ej. el renombrado anterior), ya que eso siempre requiere volver a conceder el acceso desde cero. Los event taps solo intentaban iniciarse una vez, al arrancar; conceder el acceso momentos después nunca se detectaba, aunque el propio indicador de estado de la ventana de depuración mostraba correctamente "concedido". <code>AccessibilityPermissionManager</code> ahora informa cuando cambia la confianza (<code>onTrustedChange</code>), y la app reintenta iniciar cada tap activado cuando eso ocurre — conceder el acceso en cualquier momento ahora hace que mover/redimensionar/foco-sigue-al-ratón funcionen de inmediato, sin necesidad de reiniciar.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.2.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>"Salir" ahora pide confirmación ("¿Salir de KDEMoverSizerMacOS?" / "Mover, redimensionar ventanas y foco-sigue-al-ratón dejarán de funcionar hasta que la reinicies." con botones Salir/Cancelar) en lugar de terminar inmediatamente — pulsar accidentalmente Salir o su equivalente de tecla <code>⌘Q</code> ya no mata silenciosamente el mover/redimensionar de ventanas sin posibilidad de deshacer.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.1.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Icono de app real (Dock/Finder/paquete <code>.app</code>): un <code>KDEMoverSizerMacOS/Assets.xcassets/AppIcon.appiconset</code> conectado al proyecto de Xcode mediante <code>ASSETCATALOG_COMPILER_APPICON_NAME</code>, generado en todos los tamaños requeridos del idioma <code>mac</code> (16–1024px) a partir de <code>assets/KDE_Window-Sizer-for-macOS_256px.png</code>. Antes la app no tenía ningún icono personalizado. El icono del elemento de estado de la barra de menú (un SF Symbol) no cambia.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.0.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Cambiado</h4>
+        <ul>
+          <li>Proyecto renombrado: <strong>KDESizeMoverMac</strong> → <strong>KDEMoverSizerMacOS</strong>. Afecta al slug/remoto del proyecto de GitLab, al proyecto/destinos/esquema de Xcode, a ambos identificadores de paquete y a toda referencia en código fuente/documentación/scripts. El cambio de identificador de paquete hace que las instalaciones existentes pierdan sus Ajustes persistidos (nuevo dominio de <code>UserDefaults</code>) y necesiten volver a conceder el permiso de Accesibilidad una vez tras actualizar — un coste puntual del renombrado, no una regresión. Cambio incompatible para las instalaciones existentes, de ahí el incremento de versión mayor.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.1.1 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Las ventanas de Ajustes y del registro de depuración no pasaban de forma fiable a un primer plano real — como app exclusivamente de barra de menú (<code>.accessory</code>), KDEMoverSizerMacOS nunca es la app activa, así que <code>makeKeyAndOrderFront</code> por sí solo podía dejar cualquiera de las dos ventanas detrás de la app que estuviera realmente activa. Ambas ahora llaman primero a <code>NSApp.activate(ignoringOtherApps: true)</code>, igual que la corrección que ya necesitaba el diálogo Acerca de por la misma razón.</li>
+          <li>El icono del Dock ahora aparece exactamente mientras la ventana de Ajustes o del registro de depuración está abierta (además de aparecer siempre cuando se inicia con <code>--debug</code>), en lugar de no aparecer nunca fuera del modo <code>--debug</code>. Esto también significa que hacer clic en el icono del Dock mientras se muestra trae Ajustes de vuelta al frente, igual que ya hace reiniciar la app.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.1.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Ventana de Ajustes real (US-8): "Iniciar al iniciar sesión", activar/desactivar foco-sigue-al-ratón (US-4) y su retardo (US-5 parcial) ahora se pueden cambiar desde un diálogo de ajustes propiamente dicho en lugar de solo mediante valores por defecto en el código. Persistido con <code>UserDefaults</code> (sobrevive a desinstalar la app) y versionado para futuras migraciones.</li>
+          <li>Botón "Mostrar consola de depuración" en el diálogo Acerca de, de modo que la ventana del registro de depuración se pueda abrir sin iniciar con <code>--debug</code>.</li>
+          <li>Mitigación para apps (confirmado: Firefox) que se elevan a sí mismas tras recibir la entrada mediante foco-sigue-al-ratón — consulta <code>USER_STORIES.md</code> y la sección "Optional: yabai-assisted window-order correction" de <code>DEVELOPMENT.md</code>.</li>
+          <li><code>BACKLOG.md</code> y la US-9 (selector de ventanas) añadidos a <code>USER_STORIES.md</code>.</li>
+          <li>Interruptores de Ajustes independientes para mover ventanas (US-1) y redimensionar ventanas (US-2), de modo que cada gesto pueda desactivarse por separado.</li>
+          <li>Tecla modificadora de mover/redimensionar configurable (<code>GestureModifier</code>): cualquier combinación de Comando/Opción/Control/Mayúsculas, excluyendo Mayúsculas solo, reemplazando el <code>⌘</code> previamente fijo en el código. Por defecto sigue siendo Comando.</li>
+          <li>Botones OK/Cancelar en la ventana de Ajustes: OK la cierra conservando los cambios; Cancelar revierte cada ajuste (incluido "Iniciar al iniciar sesión") al valor que tenía cuando se abrió el diálogo.</li>
+          <li>Nuevos valores por defecto: foco-sigue-al-ratón ahora desactivado por defecto (antes activado); mover y redimensionar siguen activados por defecto.</li>
+          <li><code>DEVELOPMENT.md</code>: una política de "Modificar pruebas existentes", y un nuevo <code>TEST_CHANGELOG.md</code> que rastrea específicamente las modificaciones a pruebas existentes (separado de este archivo, que solo cubre el comportamiento de cara al usuario).</li>
+          <li>Reiniciar la app mientras ya está en ejecución (p. ej. haciendo doble clic en ella de nuevo en Finder/Launchpad) ahora muestra la ventana de Ajustes en lugar de no hacer nada (US-10).</li>
+          <li>"Ocultar de la barra de menú" (US-11): un elemento de menú y una casilla de Ajustes correspondiente que ocultan por completo el elemento de estado; reiniciar la app (US-10) es la forma de volver a mostrar Ajustes y desactivarlo de nuevo.</li>
+          <li><code>USER_STORIES.md</code>: se documentó una nueva US-12, aún no implementada — una lista de exclusión por app para foco-sigue-al-ratón.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Alternar "Iniciar al iniciar sesión" desde el elemento de la barra de menú ya no dejaba desactualizada la casilla del diálogo de Ajustes — la ventana de Ajustes ahora se recrea desde cero cada vez que se abre en lugar de mantenerse en caché durante toda la sesión de la app.</li>
+          <li>El contenido de la ventana de Ajustes había superado su tamaño fijo, recortando las filas superior ("Iniciar al iniciar sesión") e inferior (OK/Cancelar) contra los bordes de la ventana. Su marco ahora tiene un tamaño generoso basado en la altura mínima realmente medida del contenido.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.0.1 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>US-3: foco-sigue-al-ratón, etapa 1 — la ventana bajo el ratón recibe entrada real de teclado/ratón tras un tiempo de espera de 150ms, sin ser elevada por encima de otras ventanas. Implementado mediante un mecanismo privado/no documentado de WindowServer portado desde el gestor de ventanas yabai, ya que el atributo público <code>AXFocused</code> por sí solo no redirige la entrada entre apps; recurre a <code>AXFocused</code> si ese mecanismo llegara a no estar disponible.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Foco-sigue-al-ratón no apuntaba de forma fiable a la ventana correcta cuando su app ya tenía varias ventanas abiertas — se restauró el mismo manejo de cambio de ventana dentro de la misma app de yabai que el porte inicial había omitido.</li>
+          <li>La latencia de activación de foco-sigue-al-ratón se redujo de hasta 350ms a menos de 200ms (150ms de retardo de espera + 20ms de intervalo de sondeo, ambos reducidos desde 300ms/50ms).</li>
+          <li>Se corrigieron notas obsoletas en <code>USER_STORIES.md</code> (a la lista de elementos de la barra de menú le faltaba "Acerca de"; el hueco "no se suspende mientras hay un menú abierto" no mencionaba la US-3).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.0.0 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Elemento de menú "Acerca de": una alerta modal con nombre de la app, versión, compilación y copyright — no el panel estándar compartido "About" de AppKit, que las pruebas mostraron que no pasa de forma fiable al frente en una app exclusivamente de barra de menú (<code>.accessory</code>).</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li><code>Info.plist</code> ahora lee <code>CFBundleShortVersionString</code>/<code>CFBundleVersion</code> desde los ajustes de compilación en lugar de valores fijos y obsoletos en el código.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.8 <span class="changelog-date">2026-07-05</span></h3>
+        <p class="changelog-nofunc">Sin cambios funcionales (solo incremento de versión).</p>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.7 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>US-1: mover cualquier ventana con <code>⌘</code>+arrastre con el botón izquierdo.</li>
+          <li>US-2: redimensionar cualquier ventana con <code>⌘</code>+arrastre con el botón derecho, anclado a la esquina más cercana.</li>
+          <li>Elemento de estado en la barra de menú (Iniciar al iniciar sesión, Salir) e icono de Dock oculto fuera del modo <code>--debug</code>.</li>
+          <li>Registro de depuración de eventos de inicio/fin de mover/redimensionar (y, para redimensionar, qué esquina se agarró).</li>
+          <li>Destinos <code>make install</code>, <code>make uninstall</code> y <code>make dmg</code>.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Firma en Xcode: seleccionar un Apple Development Team real para la firma automática.</li>
+          <li>La app se cerraba inesperadamente al alternar "Iniciar al iniciar sesión".</li>
+          <li>La app se cerraba inesperadamente al interactuar con el propio menú desplegable del elemento de la barra de menú (modo sin depuración).</li>
+          <li>Capacidad de respuesta al redimensionar: se omiten llamadas redundantes a la API de Accesibilidad y se combinan las actualizaciones de arrastre en el run loop principal.</li>
+          <li><code>make dmg</code>: el volumen montado era invisible para Finder (primero por <code>-nobrowse</code>, luego por un <code>-mountpoint</code> personalizado fuera de <code>/Volumes/</code>).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.6 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Firma de código del paquete: un certificado autofirmado no satisface las comprobaciones del permiso de Accesibilidad de TCC; se cambió a firma basada en Team.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.5 <span class="changelog-date">2026-07-05</span></h3>
+        <p class="changelog-nofunc">Sin cambios funcionales (solo incremento de versión).</p>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.4 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>CI: compilar un paquete en cada push a <code>dev</code>, versionado con el SHA del commit.</li>
+        </ul>
+        <h4>Documentación</h4>
+        <ul>
+          <li>Se documentó la Traslocación de Apps (App Translocation) como causa de avisos de permiso repetidos.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.3 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Corregido</h4>
+        <ul>
+          <li>Los paquetes publicados volvían a pedir el acceso de Accesibilidad en cada instalación.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.2 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Corregido</h4>
+        <ul>
+          <li><code>make package</code>/<code>make release</code> no lograban compilar debido a un problema de limpieza de directorio temporal.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.1 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>Esqueleto inicial del proyecto: solicitud del permiso de Accesibilidad, ventana de depuración, detección de la ventana bajo el ratón, pruebas unitarias.</li>
+          <li><code>Makefile</code> (<code>build</code>/<code>test</code>/<code>clean</code>/<code>all</code>).</li>
+          <li>Flujo de trabajo de ramas Git <code>main</code>/<code>dev</code>/<code>feature</code>/<code>bugfix</code> con un proceso de release guionizado (<code>make release</code>).</li>
+          <li>Pipeline de GitLab CI (pruebas en cada push a <code>dev</code>, release en cada push a <code>main</code>).</li>
+          <li><code>make run</code> y el flag <code>--debug</code>.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>El permiso de Accesibilidad volvía a pedirse en cada recompilación/ejecución.</li>
+          <li>Efectos secundarios de inicio (aviso de permiso, event taps) ejecutándose cuando la app es alojada por XCTest.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <p>
+        <a href="index.es.html">← Volver al inicio</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="index.es.html">Inicio</a> |
+    <a href="architecture.es.html">Arquitectura</a> |
+    <a href="disclaimer.es.html">Exención de responsabilidad</a> |
+    <a href="privacy.es.html">Privacidad</a> |
+    <a href="imprint.es.html">Aviso legal</a>
+  </footer>
+</body>
+</html>

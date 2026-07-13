@@ -10,6 +10,7 @@
   <link rel="alternate" hreflang="de" href="https://xdragmover.de/changelog.de.html">
   <link rel="alternate" hreflang="ru" href="https://xdragmover.de/changelog.ru.html">
   <link rel="alternate" hreflang="fr" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="es" href="https://xdragmover.de/changelog.es.html">
   <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/changelog.html">
   <link rel="icon" type="image/png" href="favicon-32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -31,6 +32,7 @@
       <a href="changelog.de.html">DE</a>
       <a href="changelog.ru.html">RU</a>
       <a href="changelog.fr.html" class="active">FR</a>
+      <a href="changelog.es.html">ES</a>
     </div>
   </nav>
 
@@ -41,6 +43,14 @@
 
   <main>
     <section class="changelog-list">
+      <div class="changelog-entry">
+        <h3>3.4.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Une fenêtre vide intitulée « XDragMover Settings » pouvait apparaître sans y être invitée au lancement — le plus souvent lors d'un lancement en tant qu'élément de connexion, parfois aussi lors d'un relancement manuel. Causé par SwiftUI affichant automatiquement la scène Settings de remplacement de l'application, et/ou par la restauration d'état des fenêtres d'AppKit qui rouvre une fenêtre précédemment ouverte. Corrigé en fermant toute fenêtre qu'AppKit/SwiftUI ouvre de lui-même au lancement.</li>
+        </ul>
+      </div>
+
       <div class="changelog-entry">
         <h3>3.4.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Ajouté</h4>

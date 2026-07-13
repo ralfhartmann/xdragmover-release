@@ -7,6 +7,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/index.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/index.de.html</loc>
@@ -14,6 +15,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/index.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/index.ru.html</loc>
@@ -21,6 +23,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/index.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/index.fr.html</loc>
@@ -28,6 +31,15 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/index.es.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/index.es.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/index.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/index.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/architecture.html</loc>
@@ -35,6 +47,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/architecture.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/architecture.de.html</loc>
@@ -42,6 +55,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/architecture.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/architecture.ru.html</loc>
@@ -49,6 +63,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/architecture.es.html"/>
   </url>
   <url>
     <loc>https://xdragmover.de/architecture.fr.html</loc>
@@ -56,5 +71,14 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/architecture.es.html"/>
+  </url>
+  <url>
+    <loc>https://xdragmover.de/architecture.es.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://xdragmover.de/architecture.es.html"/>
   </url>
 </urlset>
