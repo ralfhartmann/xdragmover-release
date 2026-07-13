@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XDragMover – déplacement et redimensionnement de fenêtres façon KDE pour macOS</title>
+  <meta name="description" content="XDragMover (anciennement KDEMoverSizerMacOS / KDESizeMoverMac) est un utilitaire de barre des menus macOS gratuit et open source qui apporte le déplacement et le redimensionnement de fenêtres façon KDE/Linux à macOS Ventura, Sonoma, Sequoia et Tahoe.">
+  <meta name="keywords" content="XDragMover, KDEMoverSizer, KDEMoverSizerMacOS, KDESizeMoverMac, gestionnaire de fenêtres KDE macOS, déplacer fenêtre macOS, redimensionner fenêtre macOS, glisser une fenêtre sans barre de titre, gestionnaire de fenêtres macOS, macOS Ventura, macOS Sonoma, macOS Sequoia, macOS Tahoe">
+  <link rel="canonical" href="https://xdragmover.de/index.fr.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/index.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="XDragMover – déplacement et redimensionnement de fenêtres façon KDE pour macOS">
+  <meta property="og:description" content="Utilitaire de barre des menus macOS gratuit et open source apportant le déplacement et le redimensionnement de fenêtres façon KDE/Linux à macOS Ventura, Sonoma, Sequoia et Tahoe.">
+  <meta property="og:url" content="https://xdragmover.de/index.fr.html">
+  <meta property="og:image" content="https://xdragmover.de/logo-512.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.fr.html" class="active">Accueil</a>
+      <a href="architecture.fr.html">Architecture</a>
+      <a href="disclaimer.fr.html">Avertissement</a>
+      <a href="privacy.fr.html">Confidentialité</a>
+      <a href="changelog.fr.html">Changelog</a>
+      <a href="imprint.fr.html">Mentions légales</a>
+    </div>
+    <div class="lang-switch">
+      <a href="index.html">EN</a>
+      <a href="index.de.html">DE</a>
+      <a href="index.ru.html">RU</a>
+      <a href="index.fr.html" class="active">FR</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <img src="logo-192.png" alt="Logo XDragMover" class="hero-logo" width="96" height="96">
+    <h1>XDragMover</h1>
+    <p class="subtitle">Un utilitaire de barre des menus léger et open source qui apporte le déplacement &amp; le redimensionnement de fenêtres façon KDE/Linux à macOS — déplacez ou redimensionnez n'importe quelle fenêtre depuis n'importe quel point de sa surface, sans barre de titre ni poignée de redimensionnement requise.</p>
+
+    <div class="download-buttons">
+      <a class="button primary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest/download/XDragMover.dmg">Télécharger le DMG</a>
+      <a class="button secondary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest/download/source.zip">Télécharger le code source</a>
+    </div>
+    <p class="version-note">Version actuelle : <a href="https://github.com/ralfhartmann/xdragmover-release/releases/latest">3.4.0</a></p>
+  </header>
+
+  <main>
+
+    <section>
+      <h2>Qu'est-ce que XDragMover ?</h2>
+      <p>
+        Sur de nombreux environnements de bureau Linux (KDE, GNOME, etc.), maintenir une
+        touche de modification tout en appuyant sur le bouton de la souris n'importe où
+        dans une fenêtre permet de la faire glisser, et maintenir le même modificateur
+        avec le bouton droit de la souris permet de la redimensionner depuis le coin le
+        plus proche. macOS n'a pas d'équivalent intégré.
+      </p>
+      <p>
+        XDragMover recrée ce flux de travail familier et efficace sous macOS — un
+        utilitaire petit, rapide et fiable inspiré de l'outil classique de déplacement et
+        redimensionnement de fenêtres façon KDE, publié à l'origine sur
+        <a href="https://corz.org/windows/software/accessories/KDE-resizing-moving-for-Windows.php" target="_blank" rel="noopener">corz.org</a>.
+        Il s'exécute discrètement dans la barre des menus, sans frameworks superflus ni
+        démons d'arrière-plan. Le projet s'appelait auparavant <strong>KDEMoverSizerMacOS</strong>
+        (et avant cela, <strong>KDESizeMoverMac</strong>) — si vous cherchiez l'un de ces
+        noms, vous êtes au bon endroit.
+      </p>
+    </section>
+
+    <section>
+      <h2>Installation</h2>
+      <ol>
+        <li>Cliquez sur <strong>Télécharger le DMG</strong> ci-dessus.</li>
+        <li>Ouvrez le fichier <code>XDragMover.dmg</code> téléchargé et faites glisser <strong>XDragMover.app</strong> dans le dossier <strong>Applications</strong>.</li>
+        <li>
+          Lancez XDragMover depuis Applications ou Spotlight. Il est signé avec un
+          Developer ID et notarisé par Apple, donc il s'ouvre normalement — aucun
+          avertissement de Gatekeeper ni étape d'approbation supplémentaire n'est
+          nécessaire. Il s'exécute discrètement comme élément de la barre des menus,
+          sans icône dans le Dock ni fenêtre propre.
+        </li>
+        <li>
+          Accordez l'autorisation <strong>Accessibilité</strong> lorsque demandé
+          (Réglages Système → Confidentialité et sécurité → Accessibilité) — nécessaire
+          pour que XDragMover puisse déplacer et redimensionner les fenêtres d'autres
+          applications ; voir l'<a href="architecture.fr.html">aperçu de l'architecture</a>
+          pour comprendre pourquoi.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Fonctionnalités</h2>
+      <ul class="features">
+        <li><strong>Déplacer avec modificateur + clic gauche.</strong> Maintenez le modificateur configuré (par défaut <code>⌘</code>) et glissez n'importe où dans une fenêtre — elle suit la souris au pixel près jusqu'à ce que vous relâchiez.</li>
+        <li><strong>Redimensionner avec modificateur + clic droit.</strong> Le coin de la fenêtre le plus proche de votre clic devient la poignée de redimensionnement, exactement comme si vous l'aviez saisi directement.</li>
+        <li><strong>Focus qui suit la souris configurable.</strong> Donnez optionnellement le focus d'entrée à la fenêtre sous le curseur une fois qu'elle est restée immobile pendant un court délai réglable (expérimental).</li>
+        <li><strong>Exclure des applications spécifiques.</strong> Une liste d'exclusion basée sur des regex — remplie via un sélecteur « Ajouter depuis les fenêtres ouvertes… » ou saisie à la main — protège durablement les applications choisies du déplacement/redimensionnement.</li>
+        <li><strong>Modificateur configurable.</strong> Toute combinaison de Command/Option/Control/Shift (Shift seule exclue) — à ajuster selon votre flux de travail.</li>
+        <li><strong>Léger &amp; natif.</strong> Aucune extension du noyau, aucun hack — seulement les API Accessibilité et Quartz Event Services de macOS.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Fonctionnement</h2>
+      <p>
+        XDragMover s'exécute comme une application d'arrière-plan de la barre des menus
+        qui installe un moniteur d'événements global via l'API Quartz Event Services,
+        surveillant l'état des touches de modification et de la souris à l'échelle du
+        système. Lorsqu'un geste valide est détecté, elle résout la fenêtre cible via
+        l'API Accessibilité de macOS et pilote directement sa position ou son cadre.
+        Parce qu'elle observe les événements d'entrée à l'échelle du système et
+        repositionne des fenêtres appartenant à d'autres applications, XDragMover
+        nécessite l'autorisation <strong>Accessibilité</strong> (Réglages Système →
+        Confidentialité et sécurité → Accessibilité), accordée une fois au premier
+        lancement.
+      </p>
+      <p>
+        <a href="architecture.fr.html">Lire l'aperçu complet de l'architecture →</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Prérequis</h2>
+      <ul>
+        <li>macOS 13 Ventura, macOS 14 Sonoma, macOS 15 Sequoia, macOS 26 Tahoe ou ultérieur</li>
+        <li>Autorisation Accessibilité accordée à l'application</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projet &amp; Licence</h2>
+      <p>
+        Chaque release taguée publie le « Corresponding Source » constructible requis par
+        la GPLv3 §6 directement à côté de son <code>.dmg</code> signé : récupérez
+        <code>source.zip</code> depuis la même
+        <a href="https://github.com/ralfhartmann/xdragmover-release/releases/latest" target="_blank" rel="noopener">release</a>
+        que l'installeur. Le dépôt de développement principal est privé ; ce dépôt,
+        <a href="https://github.com/ralfhartmann/xdragmover-release" target="_blank" rel="noopener">xdragmover-release</a>,
+        est le foyer public des builds signés et de leur code source correspondant.
+      </p>
+      <p>
+        XDragMover est distribué sous licence <strong>GNU General Public License v3.0</strong>.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="architecture.fr.html">Architecture</a> |
+    <a href="disclaimer.fr.html">Avertissement</a> |
+    <a href="privacy.fr.html">Confidentialité</a> |
+    <a href="changelog.fr.html">Changelog</a> |
+    <a href="imprint.fr.html">Mentions légales</a>
+  </footer>
+</body>
+</html>

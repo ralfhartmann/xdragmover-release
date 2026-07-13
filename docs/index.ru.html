@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XDragMover – перемещение и изменение размера окон в стиле KDE для macOS</title>
+  <meta name="description" content="XDragMover (ранее KDEMoverSizerMacOS / KDESizeMoverMac) — бесплатная утилита для строки меню macOS с открытым исходным кодом, привносящая типичное для KDE/Linux перемещение и изменение размера окон в macOS Ventura, Sonoma, Sequoia и Tahoe.">
+  <meta name="keywords" content="XDragMover, KDEMoverSizer, KDEMoverSizerMacOS, KDESizeMoverMac, оконный менеджер KDE macOS, перемещение окна macOS, изменение размера окна macOS, перетаскивание окна без заголовка, оконный менеджер macOS, macOS Ventura, macOS Sonoma, macOS Sequoia, macOS Tahoe">
+  <link rel="canonical" href="https://xdragmover.de/index.ru.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/index.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/index.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/index.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/index.fr.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="XDragMover – перемещение и изменение размера окон в стиле KDE для macOS">
+  <meta property="og:description" content="Бесплатная утилита для строки меню macOS с открытым исходным кодом, привносящая перемещение и изменение размера окон в стиле KDE/Linux в macOS Ventura, Sonoma, Sequoia и Tahoe.">
+  <meta property="og:url" content="https://xdragmover.de/index.ru.html">
+  <meta property="og:image" content="https://xdragmover.de/logo-512.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.ru.html" class="active">Главная</a>
+      <a href="architecture.ru.html">Архитектура</a>
+      <a href="disclaimer.ru.html">Отказ от ответственности</a>
+      <a href="privacy.ru.html">Конфиденциальность</a>
+      <a href="changelog.ru.html">Changelog</a>
+      <a href="imprint.ru.html">Выходные данные</a>
+    </div>
+    <div class="lang-switch">
+      <a href="index.html">EN</a>
+      <a href="index.de.html">DE</a>
+      <a href="index.ru.html" class="active">RU</a>
+      <a href="index.fr.html">FR</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <img src="logo-192.png" alt="Логотип XDragMover" class="hero-logo" width="96" height="96">
+    <h1>XDragMover</h1>
+    <p class="subtitle">Лёгкая утилита для строки меню с открытым исходным кодом, привносящая перемещение и изменение размера окон в стиле KDE/Linux в macOS — перемещайте или изменяйте размер любого окна из любой точки на его поверхности, без заголовка или маркера изменения размера.</p>
+
+    <div class="download-buttons">
+      <a class="button primary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest/download/XDragMover.dmg">Скачать DMG</a>
+      <a class="button secondary" href="https://github.com/ralfhartmann/xdragmover-release/releases/latest/download/source.zip">Скачать исходный код</a>
+    </div>
+    <p class="version-note">Текущая версия: <a href="https://github.com/ralfhartmann/xdragmover-release/releases/latest">3.4.0</a></p>
+  </header>
+
+  <main>
+
+    <section>
+      <h2>Что такое XDragMover?</h2>
+      <p>
+        Во многих окружениях рабочего стола Linux (KDE, GNOME и т. д.) достаточно
+        удерживать клавишу-модификатор и нажать кнопку мыши в любом месте окна, чтобы
+        перетащить его — удерживая тот же модификатор с правой кнопкой мыши, можно точно
+        так же изменить размер окна от ближайшего угла. В macOS такого встроенного
+        аналога нет.
+      </p>
+      <p>
+        XDragMover воссоздаёт этот привычный, эффективный рабочий процесс в macOS — это
+        небольшая, быстрая и надёжная утилита, вдохновлённая классическим инструментом
+        перемещения и изменения размера окон в стиле KDE, изначально опубликованным на
+        <a href="https://corz.org/windows/software/accessories/KDE-resizing-moving-for-Windows.php" target="_blank" rel="noopener">corz.org</a>.
+        Она работает незаметно в строке меню, без раздутых фреймворков и фоновых
+        демонов. Проект ранее назывался <strong>KDEMoverSizerMacOS</strong> (а до этого
+        — <strong>KDESizeMoverMac</strong>) — если вы искали именно эти названия, вы
+        попали по адресу.
+      </p>
+    </section>
+
+    <section>
+      <h2>Установка</h2>
+      <ol>
+        <li>Нажмите <strong>Скачать DMG</strong> выше.</li>
+        <li>Откройте скачанный <code>XDragMover.dmg</code> и перетащите <strong>XDragMover.app</strong> в папку <strong>Программы</strong>.</li>
+        <li>
+          Запустите XDragMover из папки «Программы» или через Spotlight. Приложение
+          подписано Developer ID и нотариально заверено (notarized) Apple, поэтому оно
+          открывается как обычно — без предупреждения Gatekeeper или дополнительного
+          шага подтверждения. Оно работает незаметно как элемент строки меню, без
+          собственного значка в Dock или окна.
+        </li>
+        <li>
+          Предоставьте разрешение <strong>специальных возможностей</strong>, когда об
+          этом попросят (Системные настройки → Конфиденциальность и безопасность →
+          Специальные возможности) — это необходимо, чтобы XDragMover мог перемещать и
+          изменять размер окон других приложений; см.
+          <a href="architecture.ru.html">Обзор архитектуры</a> для подробностей.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Возможности</h2>
+      <ul class="features">
+        <li><strong>Перемещение модификатором + левый клик.</strong> Удерживайте настроенный модификатор (по умолчанию <code>⌘</code>) и перетаскивайте в любом месте окна — оно следует за мышью 1:1, пока вы не отпустите кнопку.</li>
+        <li><strong>Изменение размера модификатором + правый клик.</strong> Ближайший к точке клика угол окна становится маркером изменения размера, точно как если бы вы схватили его напрямую.</li>
+        <li><strong>Настраиваемая функция «фокус следует за мышью».</strong> При желании передавайте фокус ввода окну под курсором после того, как он оставался неподвижным короткое, настраиваемое время (экспериментально).</li>
+        <li><strong>Исключение отдельных приложений.</strong> Список исключений на основе regex — заполняемый через средство выбора «Добавить из открытых окон…» или вручную — навсегда защищает выбранные приложения от перемещения/изменения размера.</li>
+        <li><strong>Настраиваемый модификатор.</strong> Любая комбинация Command/Option/Control/Shift (кроме одного Shift) — подстройте под свой рабочий процесс.</li>
+        <li><strong>Лёгкое и нативное.</strong> Никаких расширений ядра, никаких хаков — только API macOS Accessibility и Quartz Event Services.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Как это работает</h2>
+      <p>
+        XDragMover работает как фоновое приложение строки меню, устанавливающее
+        системный монитор событий через API Quartz Event Services, отслеживающий
+        состояние клавиш-модификаторов и мыши по всей системе. При обнаружении
+        подходящего жеста приложение определяет целевое окно через macOS Accessibility
+        API и напрямую управляет его положением или размером. Поскольку приложение
+        отслеживает события ввода по всей системе и перемещает окна, принадлежащие
+        другим приложениям, XDragMover требует разрешение
+        <strong>специальных возможностей</strong> (Системные настройки →
+        Конфиденциальность и безопасность → Специальные возможности), предоставляемое
+        один раз при первом запуске.
+      </p>
+      <p>
+        <a href="architecture.ru.html">Читать полный обзор архитектуры →</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Требования</h2>
+      <ul>
+        <li>macOS 13 Ventura, macOS 14 Sonoma, macOS 15 Sequoia, macOS 26 Tahoe или новее</li>
+        <li>Разрешение специальных возможностей, предоставленное приложению</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Проект и лицензия</h2>
+      <p>
+        Каждый помеченный тегом релиз публикует собираемый «соответствующий исходный
+        код» («Corresponding Source»), требуемый согласно GPLv3 §6, прямо рядом со
+        своим подписанным <code>.dmg</code>: возьмите <code>source.zip</code> из того же
+        <a href="https://github.com/ralfhartmann/xdragmover-release/releases/latest" target="_blank" rel="noopener">релиза</a>,
+        что и установщик. Основной репозиторий разработки приватный; этот репозиторий,
+        <a href="https://github.com/ralfhartmann/xdragmover-release" target="_blank" rel="noopener">xdragmover-release</a>,
+        — публичный дом для подписанных сборок и соответствующего им исходного кода.
+      </p>
+      <p>
+        XDragMover распространяется по лицензии <strong>GNU General Public License v3.0</strong>.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="architecture.ru.html">Архитектура</a> |
+    <a href="disclaimer.ru.html">Отказ от ответственности</a> |
+    <a href="privacy.ru.html">Конфиденциальность</a> |
+    <a href="changelog.ru.html">Changelog</a> |
+    <a href="imprint.ru.html">Выходные данные</a>
+  </footer>
+</body>
+</html>

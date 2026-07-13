@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changelog – XDragMover</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://xdragmover.de/changelog.de.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/changelog.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/changelog.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/changelog.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/changelog.html">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.de.html">Start</a>
+      <a href="architecture.de.html">Architektur</a>
+      <a href="disclaimer.de.html">Haftungsausschluss</a>
+      <a href="privacy.de.html">Datenschutz</a>
+      <a href="changelog.de.html" class="active">Changelog</a>
+      <a href="imprint.de.html">Impressum</a>
+    </div>
+    <div class="lang-switch">
+      <a href="changelog.html">EN</a>
+      <a href="changelog.de.html" class="active">DE</a>
+      <a href="changelog.ru.html">RU</a>
+      <a href="changelog.fr.html">FR</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Changelog</h1>
+    <p class="subtitle">Jede nennenswerte Änderung an XDragMover, Release für Release.</p>
+  </header>
+
+  <main>
+    <section class="changelog-list">
+      <div class="changelog-entry">
+        <h3>3.4.0 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Lokalisierung auf Deutsch, Russisch und Französisch. Die Oberfläche von XDragMover (Einstellungen, Menüleiste, Warnhinweise) folgt jetzt der Systemsprache über einen String Catalog; für jede andere Sprache wird auf Englisch zurückgefallen.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Das Entfernen eines Musters im Einstellungen-Tab „Ausgeschlossene Fenster" konnte die App zum Absturz bringen, wenn es nicht das letzte in der Liste war — ein veralteter Array-Index, der im Textfeld einer anderen, noch sichtbaren Zeile hängen blieb. Live nachgestellt und behoben.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.3.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Geändert</h4>
+        <ul>
+          <li>Bundle-Identifier von der Platzhalter-ID <code>com.example.XDragMover</code> auf <code>de.xdragmover</code> geändert (<code>de.xdragmover.tests</code> für das Test-Target) — die Reverse-DNS-Form der projekteigenen Domain xdragmover.de. Wer eine frühere Version installiert hat, muss die Bedienungshilfen-Berechtigung einmalig neu erteilen, da macOS diese Berechtigung an den Bundle-Identifier koppelt.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li><code>make dmg</code> konnte den <code>.dmg</code>-Container auf dem GitLab-Runner nicht signieren („The following argument was not expected: --timestamp"), weil dessen nicht-interaktiver PATH ein anderes, unabhängiges Programm namens <code>codesign</code> vor Apples echtem auflöste — ruft jetzt explizit <code>/usr/bin/codesign</code> auf und umgeht die PATH-Auflösung komplett.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.3.0 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Mittelklick auf das Dock-Symbol einer App öffnet ein neues Fenster/eine neue Instanz davon (US-16). Standardmäßig aus; umschaltbar unter Einstellungen → Gesten → „Mittelklick auf Dock-Symbol für neue Instanz".</li>
+        </ul>
+        <h4>Geändert</h4>
+        <ul>
+          <li>App-Symbol (Dock/Finder/<code>.app</code>-Bundle) wiederhergestellt, mit neuem Design (<code>assets/logo.png</code>) anstelle des in 3.1.0 aus markenrechtlichen Bedenken entfernten.</li>
+          <li>Release-Builds werden jetzt mit einer kostenpflichtigen „Developer ID Application"-Identität signiert sowie notariell bestätigt (notarized) und mit einem Ticket versehen (stapled) — ein Rechner, auf dem die App noch nie lief, sieht daher nicht mehr Gatekeepers Warnung „nicht verifizierter Entwickler". Siehe Abschnitt „Notarization" in <code>DEVELOPMENT.md</code>.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Mittelklick auf Finders Dock-Symbol schlug bei bereits laufendem Finder (also praktisch immer) komplett fehl mit „Die App „Finder.app" kann nicht geöffnet werden." statt ein neues Fenster zu öffnen (US-16). Ein Mittelklick auf das Dock-Symbol einer bereits laufenden App drückt jetzt, sofern vorhanden, direkt deren eigenen Menüpunkt „Neues Fenster" über die Accessibility-API (deckt Finder und die meisten fensterbasierten Apps ab, z. B. iTerm2), statt eine neue Instanz zu erzwingen; Apps ohne einen solchen Menüpunkt (z. B. dokumentbasierte Apps wie TextEdit) öffnen weiterhin wie zuvor eine neue Instanz.</li>
+          <li>Mittelklick auf iTerm2s Dock-Symbol erzeugte pro Klick einen kompletten neuen, schwergewichtigen Prozess (eigener Shell-/Sitzungs-Daemon) statt nur ein neues Fenster in der bereits laufenden App (US-16); durch dasselbe oben beschriebene Drücken des Menüpunkts „Neues Fenster" behoben.</li>
+          <li>Ein Mittelklick auf ein Dock-Symbol konnte das eigene Kontextmenü des Dock-Symbols neben dem neuen Fenster/der neuen Instanz offen auf dem Bildschirm zurücklassen (US-16); der Mittelklick wird jetzt abgefangen, wenn diese Funktion darauf reagiert.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.2.0 <span class="changelog-date">2026-07-11</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Optionaler Update-Check (Einstellungen → Allgemein → „Nach Updates suchen", standardmäßig aus). Bei Aktivierung wird 5 Minuten nach dem Start und danach einmal täglich das öffentliche Release-Repository auf eine neuere Version geprüft; wird eine gefunden, erscheint ein Dialog mit einer „Herunterladen"-Schaltfläche, die direkt zur neuen <code>.dmg</code> führt.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.1.0 <span class="changelog-date">2026-07-09</span></h3>
+        <h4>Geändert</h4>
+        <ul>
+          <li>Das in 3.0.0 hinzugefügte eigene App-Symbol vorübergehend entfernt (sein Design enthielt die Silhouette des Apple-Logos, ein möglicher markenrechtlicher Konflikt); die App verwendet bis zu einem Ersatzdesign wieder das von macOS automatisch generierte Standardsymbol.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.0.0 <span class="changelog-date">2026-07-09</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Ausgeschlossene Fenster (Einstellungen): eine Liste von Regex-Mustern, die gegen den Namen einer App geprüft werden — jede App in der Liste kann nie verschoben oder in der Größe verändert werden. Einträge werden normalerweise über „Aus offenen Fenstern hinzufügen…" hinzugefügt, einen Picker mit den aktuell offenen Apps, der für die Auswahl ein exaktes Muster (z. B. <code>^Calculator$</code>) erzeugt; jedes Muster bleibt danach als reiner Text editierbar („Muster hinzufügen" fügt eine leere Zeile hinzu), ungültige Regexes werden rot angezeigt, ohne etwas zu blockieren.</li>
+          <li>Debug-Konsole: eine Schaltfläche „Scroll Lock". Aus (Standard, gespeichert) hält die Konsole wie bisher stets auf die neueste Zeile gescrollt, sobald neue Einträge eintreffen. An erlaubt freies Scrollen durch die Historie, ohne bei jeder neuen Log-Zeile wieder nach unten gezogen zu werden.</li>
+          <li>Fokus folgt Maus zeigt jetzt beim ersten Aktivieren in den Einstellungen einen einmaligen Warnhinweis („Fokus folgt Maus ist experimentell…", mit einer „Nicht mehr anzeigen"-Checkbox), der erklärt, dass die Funktion auf einem undokumentierten macOS-Mechanismus beruht und sich in manchen Apps unzuverlässig verhalten kann. Auch die README weist jetzt explizit darauf hin, statt es nur anzudeuten. Der Tab „Fokus folgt Maus" zeigt diesen Hinweis zusätzlich dauerhaft (nicht nur einmal), sodass er bei jedem Öffnen des Tabs sichtbar ist, nicht nur beim ersten Mal.</li>
+        </ul>
+        <h4>Geändert</h4>
+        <ul>
+          <li>Projekt umbenannt: <strong>KDEMoverSizerMacOS</strong> → <strong>XDragMover</strong>. Betrifft den GitLab-Projekt-Slug/Remote, das Xcode-Projekt/die Targets/das Scheme, beide Bundle-Identifier (jetzt <code>com.example.XDragMover</code>/<code>...Tests</code>) sowie jede Quellcode-/Dokumentations-/Skript-Referenz. Wie bei der vorherigen Umbenennung (2.0.0) bedeutet die Änderung des Bundle-Identifiers, dass bestehende Installationen ihre gespeicherten Einstellungen verlieren (neue <code>UserDefaults</code>-Domain) und nach dem Update einmalig die Bedienungshilfen-Berechtigung neu erteilen müssen. Breaking Change für bestehende Installationen, daher bei Release ein Major-Versionssprung.</li>
+          <li>App-Symbol durch ein neues Design ersetzt, das die regenbogenfarbene Silhouette des Apple-Logos, das „X" von X.Org (aus <code>assets/X.Org_Logo.png</code>) und das Verschiebe-Pfeilkreuz kombiniert, neu erzeugt in allen <code>mac</code>-Idiom-Größen (16–1024px).</li>
+          <li>Einstellungsfenster über eine Segment-Steuerung in Tabs neu organisiert (Allgemein, Gesten, Ausgeschlossene Fenster, Fokus folgt Maus, Über), statt einer langen, scrollenden Liste aller Abschnitte übereinander.</li>
+          <li>„Über XDragMover" (Menüleiste) öffnet jetzt den Tab „Über" des Einstellungsfensters (letzter Tab) statt eines separaten modalen Dialogs — die Schaltfläche „Debug-Konsole anzeigen" ist mit umgezogen. Ein Klick auf „Über" bei bereits geöffneten, aber auf einem anderen Tab stehenden Einstellungen wechselt zum Tab „Über", statt auf dem gerade angezeigten Tab zu bleiben.</li>
+          <li>Lizenzierung: <code>LICENSE</code> (GPLv3) und <code>LICENSING.md</code> hinzugefügt, die das Dual-Licensing-Modell erklären, das eine zukünftige Veröffentlichung im Apple App Store weiterhin ermöglicht; Ralf Hartmann als Autor in der README und im Copyright-String der App genannt.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Die Schaltfläche „Scroll Lock" der Debug-Konsole sah unabhängig vom Zustand gleich aus (schlichter neutralgrauer Hintergrund), nur das winzige Vorhängeschloss-Symbol änderte sich — leicht zu übersehen, sodass sie auch aktiviert inaktiv wirkte. Sie füllt sich jetzt bei aktiviertem Zustand mit der Akzentfarbe, wie es andere umschaltbare macOS-Symbolleisten-Schaltflächen für den aktiven/gedrückten Zustand tun.</li>
+          <li>Einstellungsfenster: Das erste Element („Bei Anmeldung starten") und die Abbrechen/OK-Schaltflächen rückten mit der Zeit, als mehr Abschnitte hinzukamen, immer dichter an die obere/untere Fensterkante, da alles einen gemeinsamen, nicht scrollenden Stack fester Höhe teilte. Die Einstellungsabschnitte scrollen jetzt unabhängig innerhalb des Fensters, Abbrechen/OK sind in einer stets vollständig gepolsterten Fußzeile unterhalb eines Trennstrichs fixiert — beide Enden behalten ihren vorgesehenen Abstand, unabhängig davon, wie viel Inhalt darüber steht.</li>
+          <li>Der Verzögerungs-Schieberegler für Fokus folgt Maus war schwer auf einen präzisen Wert zu treffen — sein 10-ms-Schritt packte 95 diskrete Positionen in ein schmales Zieh-Steuerelement, leicht zu übersteuern. Ein <code>Stepper</code> daneben hinzugefügt für exakte Anpassung per Klick oder Halten in ±10-ms-Schritten; der Schieberegler bleibt für schnelle grobe Positionierung erhalten.</li>
+          <li>Verschieben/Größenänderung (und Fokus folgt Maus) blieben für den gesamten Programmlauf stillschweigend funktionslos, wenn die Bedienungshilfen-Berechtigung genau im Moment des Starts noch nicht erteilt war — ein häufiges Wettrennen mit der Systemabfrage, garantiert nach jeder Änderung des Bundle-Identifiers (z. B. der Umbenennung oben), da diese die Berechtigung immer wieder von Grund auf neu erfordert. Die Event-Taps versuchten nur einmal beim Start zu starten; eine wenig später erteilte Berechtigung wurde nie bemerkt, obwohl die eigene Statusanzeige des Debug-Fensters korrekt „erteilt" anzeigte. <code>AccessibilityPermissionManager</code> meldet jetzt Vertrauensänderungen (<code>onTrustedChange</code>), und die App versucht dann erneut, jeden aktivierten Tap zu starten — eine zu beliebigem Zeitpunkt erteilte Berechtigung lässt Verschieben/Größenänderung/Fokus folgt Maus jetzt sofort funktionieren, kein Neustart nötig.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.2.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>„Beenden" fragt jetzt zur Bestätigung nach („KDEMoverSizerMacOS beenden?" / „Fensterverschiebung, -größenänderung und Fokus folgt Maus funktionieren erst nach einem Neustart wieder." mit Beenden/Abbrechen-Schaltflächen), statt sofort zu terminieren — ein versehentliches Klicken auf Beenden oder das Tastenkürzel <code>⌘Q</code> beendet Verschieben/Größenänderung nicht mehr stillschweigend und ohne Rückgängig-Möglichkeit.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.1.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Echtes App-Symbol (Dock/Finder/<code>.app</code>-Bundle): ein <code>KDEMoverSizerMacOS/Assets.xcassets/AppIcon.appiconset</code>, über <code>ASSETCATALOG_COMPILER_APPICON_NAME</code> ins Xcode-Projekt eingebunden, erzeugt in allen erforderlichen <code>mac</code>-Idiom-Größen (16–1024px) aus <code>assets/KDE_Window-Sizer-for-macOS_256px.png</code>. Zuvor hatte die App überhaupt kein eigenes Symbol. Das Symbol des Menüleisten-Status-Items (ein SF Symbol) bleibt unverändert.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.0.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Geändert</h4>
+        <ul>
+          <li>Projekt umbenannt: <strong>KDESizeMoverMac</strong> → <strong>KDEMoverSizerMacOS</strong>. Betrifft den GitLab-Projekt-Slug/Remote, das Xcode-Projekt/die Targets/das Scheme, beide Bundle-Identifier sowie jede Quellcode-/Dokumentations-/Skript-Referenz. Die Änderung des Bundle-Identifiers bedeutet, dass bestehende Installationen ihre gespeicherten Einstellungen verlieren (neue <code>UserDefaults</code>-Domain) und nach dem Update einmalig die Bedienungshilfen-Berechtigung neu erteilen müssen — ein einmaliger Preis der Umbenennung, keine Regression. Breaking Change für bestehende Installationen, daher der Major-Versionssprung.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.1.1 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Die Fenster „Einstellungen" und „Debug-Protokoll" traten nicht zuverlässig tatsächlich in den Vordergrund — als reine Menüleisten-App (<code>.accessory</code>) ist KDEMoverSizerMacOS nie die aktive App, sodass <code>makeKeyAndOrderFront</code> allein eines der Fenster hinter der tatsächlich aktiven anderen App zurücklassen konnte. Beide rufen jetzt zuerst <code>NSApp.activate(ignoringOtherApps: true)</code> auf, entsprechend der Korrektur, die der Über-Dialog aus demselben Grund bereits benötigte.</li>
+          <li>Das Dock-Symbol erscheint jetzt genau dann, wenn das Einstellungen- oder Debug-Protokoll-Fenster geöffnet ist (zusätzlich zur ständigen Anzeige beim Start mit <code>--debug</code>), statt außerhalb des <code>--debug</code>-Modus nie zu erscheinen. Das bedeutet auch: Ein Klick auf das Dock-Symbol, während es angezeigt wird, holt Einstellungen wieder nach vorn, genau wie es ein Neustart der App bereits tut.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.1.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Echtes Einstellungsfenster (US-8): „Bei Anmeldung starten", das Ein-/Ausschalten von Fokus folgt Maus (US-4) und dessen Verweildauer (teilweise US-5) sind jetzt alle über einen richtigen Einstellungsdialog änderbar statt nur über fest im Code hinterlegte Standardwerte. Gespeichert mit <code>UserDefaults</code> (übersteht das Deinstallieren der App) und versioniert für zukünftige Migrationen.</li>
+          <li>Schaltfläche „Debug-Konsole anzeigen" im Über-Dialog, sodass das Debug-Protokoll-Fenster geöffnet werden kann, ohne mit <code>--debug</code> zu starten.</li>
+          <li>Abmilderung für Apps (bestätigt: Firefox), die sich selbst in den Vordergrund holen, nachdem Fokus folgt Maus ihnen Eingaben zugewiesen hat — siehe <code>USER_STORIES.md</code> und den Abschnitt „Optional: yabai-unterstützte Fensterreihenfolge-Korrektur" in <code>DEVELOPMENT.md</code>.</li>
+          <li><code>BACKLOG.md</code> sowie US-9 (Fensterwechsler) zu <code>USER_STORIES.md</code> hinzugefügt.</li>
+          <li>Unabhängige Einstellungs-Schalter für Fensterverschiebung (US-1) und Fenstergrößenänderung (US-2), sodass jede Geste für sich deaktiviert werden kann.</li>
+          <li>Konfigurierbare Modifikatortaste für Verschieben/Größenänderung (<code>GestureModifier</code>): beliebige Kombination aus Command/Option/Control/Shift, Shift allein ausgeschlossen, ersetzt das zuvor fest codierte <code>⌘</code>. Standard bleibt Command.</li>
+          <li>OK/Abbrechen-Schaltflächen im Einstellungsfenster: OK schließt es mit den Änderungen; Abbrechen setzt jede Einstellung (einschließlich „Bei Anmeldung starten") auf den Stand beim Öffnen des Dialogs zurück.</li>
+          <li>Neue Standardwerte: Fokus folgt Maus ist jetzt standardmäßig aus (war an); Verschieben und Größenänderung bleiben standardmäßig an.</li>
+          <li><code>DEVELOPMENT.md</code>: eine Richtlinie „Changing existing tests" sowie eine neue <code>TEST_CHANGELOG.md</code>, die speziell Änderungen an bestehenden Tests nachverfolgt (getrennt von dieser Datei, die nur nutzerseitig sichtbares Verhalten abdeckt).</li>
+          <li>Ein erneuter Start der App, während sie bereits läuft (z. B. erneuter Doppelklick in Finder/Launchpad), zeigt jetzt das Einstellungsfenster, statt nichts zu tun (US-10).</li>
+          <li>„Aus der Menüleiste ausblenden" (US-11): ein Menüpunkt samt passender Checkbox in den Einstellungen, der das Status-Item vollständig ausblendet; ein erneuter Start der App (US-10) bringt Einstellungen zurück, um es wieder auszuschalten.</li>
+          <li><code>USER_STORIES.md</code>: neue, noch nicht implementierte US-12 dokumentiert — eine app-spezifische Ausschlussliste für Fokus folgt Maus.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Das Umschalten von „Bei Anmeldung starten" über das Menüleisten-Item hinterließ nicht mehr eine veraltete Checkbox im Einstellungsdialog — das Einstellungsfenster wird jetzt bei jedem Öffnen neu erzeugt, statt für die gesamte App-Sitzung zwischengespeichert zu werden.</li>
+          <li>Der Inhalt des Einstellungsfensters war über seine feste Größe hinausgewachsen und schnitt die obere („Bei Anmeldung starten") und untere (OK/Abbrechen) Zeile bündig an den Fensterkanten ab. Sein Rahmen wird jetzt großzügig anhand der tatsächlich gemessenen Mindesthöhe des Inhalts dimensioniert.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.0.1 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>US-3: Fokus folgt Maus, Stufe 1 — das Fenster unter dem Mauszeiger erhält nach 150 ms Verweildauer echte Tastatur-/Mauseingaben, ohne über andere Fenster angehoben zu werden. Umgesetzt über einen privaten/undokumentierten WindowServer-Mechanismus, portiert aus dem Fenstermanager yabai, da das öffentliche <code>AXFocused</code>-Attribut allein Eingaben nicht app-übergreifend umleitet; fällt auf <code>AXFocused</code> zurück, falls dieser Mechanismus einmal nicht verfügbar sein sollte.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Fokus folgt Maus zielte nicht zuverlässig auf das richtige Fenster, wenn dessen App bereits mehrere Fenster geöffnet hatte — die Behandlung des Fensterwechsels innerhalb derselben App aus yabai, die beim ersten Portieren verloren gegangen war, wurde wiederhergestellt.</li>
+          <li>Aktivierungslatenz von Fokus folgt Maus von bis zu 350 ms auf unter 200 ms reduziert (150 ms Verweildauer + 20 ms Abfrageintervall, beide gesenkt von 300 ms/50 ms).</li>
+          <li>Veraltete Hinweise in <code>USER_STORIES.md</code> korrigiert (in der Liste der Menüleisten-Items fehlte „Über"; die Lücke „wird bei geöffnetem Menü nicht ausgesetzt" erwähnte US-3 nicht).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.0.0 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Menüpunkt „Über": ein modaler Dialog mit App-Name, Version, Build und Copyright — nicht AppKits gemeinsam genutztes Standard-Info-Panel, das laut Tests bei einer reinen Menüleisten-App (<code>.accessory</code>) nicht zuverlässig in den Vordergrund tritt.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li><code>Info.plist</code> liest <code>CFBundleShortVersionString</code>/<code>CFBundleVersion</code> jetzt aus den Build-Einstellungen statt aus fest codierten, veralteten Werten.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.8 <span class="changelog-date">2026-07-05</span></h3>
+        <p class="changelog-nofunc">Keine funktionalen Änderungen (nur Versionssprung).</p>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.7 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>US-1: jedes Fenster mit <code>⌘</code>+Linksziehen verschieben.</li>
+          <li>US-2: jedes Fenster mit <code>⌘</code>+Rechtsziehen in der Größe ändern, verankert an der nächstgelegenen Ecke.</li>
+          <li>Menüleisten-Status-Item (Bei Anmeldung starten, Beenden) und verstecktes Dock-Symbol außerhalb des <code>--debug</code>-Modus.</li>
+          <li>Debug-Protokollierung von Start-/End-Ereignissen bei Verschieben/Größenänderung (und, bei Größenänderung, welche Ecke gegriffen wurde).</li>
+          <li>Die Make-Ziele <code>make install</code>, <code>make uninstall</code> und <code>make dmg</code>.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Xcode-Signierung: ein echtes Apple-Development-Team für die automatische Signierung ausgewählt.</li>
+          <li>App beendete sich unerwartet beim Umschalten von „Bei Anmeldung starten".</li>
+          <li>App beendete sich unerwartet bei Interaktion mit dem eigenen Dropdown-Menü des Menüleisten-Items (nicht im Debug-Modus).</li>
+          <li>Reaktionsfähigkeit bei Größenänderung: redundante Accessibility-API-Aufrufe übersprungen und Zieh-Updates auf die Haupt-Run-Loop zusammengefasst.</li>
+          <li><code>make dmg</code>: das eingebundene Volume war im Finder unsichtbar (zunächst wegen <code>-nobrowse</code>, dann wegen eines eigenen <code>-mountpoint</code> außerhalb von <code>/Volumes/</code>).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.6 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Paket-Codesignierung: ein selbstsigniertes Zertifikat erfüllt nicht die Bedienungshilfen-Prüfungen von TCC; auf teambasierte Signierung umgestellt.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.5 <span class="changelog-date">2026-07-05</span></h3>
+        <p class="changelog-nofunc">Keine funktionalen Änderungen (nur Versionssprung).</p>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.4 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>CI: baut bei jedem Push nach <code>dev</code> ein Paket, versioniert mit dem Commit-SHA.</li>
+        </ul>
+        <h4>Dokumentation</h4>
+        <ul>
+          <li>App-Translocation als Ursache wiederholter Berechtigungsabfragen dokumentiert.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.3 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Veröffentlichte Pakete fragten bei jeder Installation erneut nach der Bedienungshilfen-Berechtigung.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.2 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Behoben</h4>
+        <ul>
+          <li><code>make package</code>/<code>make release</code> scheiterte beim Bauen wegen eines Problems beim Aufräumen des Temp-Verzeichnisses.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.1 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>Initiales Projektgerüst: Anfrage der Bedienungshilfen-Berechtigung, Debug-Fenster, Erkennung des Fensters unter dem Mauszeiger, Unit-Tests.</li>
+          <li><code>Makefile</code> (<code>build</code>/<code>test</code>/<code>clean</code>/<code>all</code>).</li>
+          <li>Git-Branching-Workflow <code>main</code>/<code>dev</code>/<code>feature</code>/<code>bugfix</code> mit skriptgesteuertem Release-Prozess (<code>make release</code>).</li>
+          <li>GitLab-CI-Pipeline (Test bei Push nach <code>dev</code>, Release bei Push nach <code>main</code>).</li>
+          <li><code>make run</code> sowie das <code>--debug</code>-Flag.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Erneute Abfrage der Bedienungshilfen-Berechtigung bei jedem Neu-Build/Lauf.</li>
+          <li>Nebeneffekte beim Start (Berechtigungsabfrage, Event-Taps), die auftraten, wenn die App von XCTest gehostet wurde.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <p>
+        <a href="index.de.html">← Zurück zur Startseite</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="index.de.html">Start</a> |
+    <a href="architecture.de.html">Architektur</a> |
+    <a href="disclaimer.de.html">Haftungsausschluss</a> |
+    <a href="privacy.de.html">Datenschutz</a> |
+    <a href="imprint.de.html">Impressum</a>
+  </footer>
+</body>
+</html>

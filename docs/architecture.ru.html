@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Обзор архитектуры – XDragMover</title>
+  <meta name="description" content="Как XDragMover устроен изнутри: системный монитор событий через Quartz Event Services, конвейер event-tap/controller и интеграция с macOS Accessibility API за перемещением и изменением размера окон в стиле KDE в macOS.">
+  <meta name="keywords" content="архитектура XDragMover, macOS Accessibility API, Quartz Event Services, AXUIElement, KDEMoverSizer, внутреннее устройство оконного менеджера macOS">
+  <link rel="canonical" href="https://xdragmover.de/architecture.ru.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/architecture.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/architecture.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/architecture.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/architecture.fr.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/architecture.html">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.ru.html">Главная</a>
+      <a href="architecture.ru.html" class="active">Архитектура</a>
+      <a href="disclaimer.ru.html">Отказ от ответственности</a>
+      <a href="privacy.ru.html">Конфиденциальность</a>
+      <a href="changelog.ru.html">Changelog</a>
+      <a href="imprint.ru.html">Выходные данные</a>
+    </div>
+    <div class="lang-switch">
+      <a href="architecture.html">EN</a>
+      <a href="architecture.de.html">DE</a>
+      <a href="architecture.ru.html" class="active">RU</a>
+      <a href="architecture.fr.html">FR</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Обзор архитектуры</h1>
+    <p class="subtitle">Как XDragMover превращает жест «модификатор+клик» в перемещённое или изменённое в размере окно, используя исключительно публичные и слегка приватные API macOS.</p>
+  </header>
+
+  <main>
+
+    <section>
+      <h2>Конвейер</h2>
+      <p>
+        XDragMover работает как фоновое приложение строки меню, устанавливающее
+        системный монитор событий через API Quartz Event Services, отслеживающий
+        состояние клавиш-модификаторов и мыши по всей системе. При обнаружении
+        подходящего жеста приложение определяет целевое окно через macOS Accessibility
+        API и напрямую управляет его положением или размером.
+      </p>
+
+      <div class="arch-diagram">
+        <div class="arch-box">
+          <span class="label">Глобальный монитор событий</span>
+          <span class="sub">Quartz Event Services</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Event Tap</span>
+          <span class="sub">Обработчики Move / Resize / Focus</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Контроллер</span>
+          <span class="sub">Логика жестов и исключений</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Accessibility API</span>
+          <span class="sub">Позиция/размер AXUIElement</span>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-box">
+          <span class="label">Целевое окно</span>
+          <span class="sub">Окно любого другого приложения</span>
+        </div>
+      </div>
+      <p class="arch-side">
+        Общий слой <code>AppSettings</code> (на основе <code>UserDefaults</code>) в
+        реальном времени передаёт активный модификатор, задержку и шаблоны исключений
+        в каждую пару tap/контроллер — изменения в настройках применяются немедленно,
+        без перезапуска. <code>StatusMenuController</code> предоставляет элемент строки
+        меню и окна настроек/отладки вокруг этого основного конвейера.
+      </p>
+    </section>
+
+    <section>
+      <h2>Этапы подробно</h2>
+      <ul class="features">
+        <li><strong>Глобальный монитор событий.</strong> Обработчик Quartz Event Services отслеживает флаги клавиш-модификаторов и события кнопок/движения мыши по всей системе, а не только в окнах этого приложения.</li>
+        <li><strong>Event Tap.</strong> <code>WindowMoveEventTap</code>/<code>WindowResizeEventTap</code>/<code>FocusFollowsMouseEventTap</code> сравнивают входящие события с настроенным <code>GestureModifier</code> (любая комбинация Command/Option/Control/Shift, кроме одного Shift) и передают подходящие события тестируемому контроллеру.</li>
+        <li><strong>Контроллер.</strong> <code>WindowMoveController</code>/<code>WindowResizeController</code> определяют, какое окно находится под курсором, сверяют его со списком исключений на основе regex (по имени владеющего приложения) и, если оно не исключено, отслеживают смещение мыши на протяжении перетаскивания.</li>
+        <li><strong>Accessibility API.</strong> Изменения позиции и размера применяются напрямую через атрибуты <code>AXUIElement</code> (<code>AXWindowHandling</code>) — тот же механизм, который регулируется разрешением специальных возможностей в системных настройках.</li>
+        <li><strong>Целевое окно.</strong> Перемещаемое или изменяемое в размере окно принадлежит тому приложению, которое находится под курсором — XDragMover работает единообразно со всеми стандартными приложениями macOS, без интеграции для каждого приложения отдельно.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Разрешения</h2>
+      <p>
+        Поскольку приложение отслеживает события ввода по всей системе и перемещает
+        окна, принадлежащие другим приложениям, XDragMover требует разрешение
+        <strong>специальных возможностей</strong> (Системные настройки → Конфиденциальность
+        и безопасность → Специальные возможности), предоставляемое один раз при первом
+        запуске. Никакие другие особые разрешения, расширения ядра или фоновые демоны
+        не используются.
+      </p>
+      <p>
+        <a href="index.ru.html">← Назад на главную</a>
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <a href="index.ru.html">Главная</a> |
+    <a href="disclaimer.ru.html">Отказ от ответственности</a> |
+    <a href="privacy.ru.html">Конфиденциальность</a> |
+    <a href="changelog.ru.html">Changelog</a> |
+    <a href="imprint.ru.html">Выходные данные</a>
+  </footer>
+</body>
+</html>

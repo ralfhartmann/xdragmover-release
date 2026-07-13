@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Journal des modifications – XDragMover</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="en" href="https://xdragmover.de/changelog.html">
+  <link rel="alternate" hreflang="de" href="https://xdragmover.de/changelog.de.html">
+  <link rel="alternate" hreflang="ru" href="https://xdragmover.de/changelog.ru.html">
+  <link rel="alternate" hreflang="fr" href="https://xdragmover.de/changelog.fr.html">
+  <link rel="alternate" hreflang="x-default" href="https://xdragmover.de/changelog.html">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="topnav">
+    <div class="nav-links">
+      <a href="index.fr.html">Accueil</a>
+      <a href="architecture.fr.html">Architecture</a>
+      <a href="disclaimer.fr.html">Avertissement</a>
+      <a href="privacy.fr.html">Confidentialité</a>
+      <a href="changelog.fr.html" class="active">Changelog</a>
+      <a href="imprint.fr.html">Mentions légales</a>
+    </div>
+    <div class="lang-switch">
+      <a href="changelog.html">EN</a>
+      <a href="changelog.de.html">DE</a>
+      <a href="changelog.ru.html">RU</a>
+      <a href="changelog.fr.html" class="active">FR</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Journal des modifications</h1>
+    <p class="subtitle">Chaque changement notable apporté à XDragMover, release par release.</p>
+  </header>
+
+  <main>
+    <section class="changelog-list">
+      <div class="changelog-entry">
+        <h3>3.4.0 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Localisation en allemand, russe et français. L'interface de XDragMover (réglages, barre des menus, alertes) suit désormais la langue du système via un String Catalog ; toute autre langue revient à l'anglais.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>La suppression d'un motif dans l'onglet « Fenêtres exclues » des réglages pouvait faire planter l'application lorsqu'il ne s'agissait pas du dernier de la liste — un index de tableau obsolète resté accroché au champ de texte d'une autre ligne encore visible. Reproduit en direct et corrigé.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.3.1 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Modifié</h4>
+        <ul>
+          <li>Identifiant de bundle changé du placeholder <code>com.example.XDragMover</code> vers <code>de.xdragmover</code> (<code>de.xdragmover.tests</code> pour la cible de test) — la forme DNS inversée du propre domaine du projet, xdragmover.de. Quiconque a une version précédente installée devra réaccorder une fois l'accès Accessibilité, car macOS lie cette autorisation à l'identifiant de bundle.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li><code>make dmg</code> échouait à signer le conteneur <code>.dmg</code> sur le GitLab Runner (« The following argument was not expected: --timestamp ») parce que son PATH non interactif résolvait un binaire différent et sans rapport nommé <code>codesign</code> avant le vrai binaire d'Apple — appelle désormais explicitement <code>/usr/bin/codesign</code>, contournant entièrement la résolution du PATH.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.3.0 <span class="changelog-date">2026-07-13</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Un clic central sur l'icône du Dock d'une application ouvre une nouvelle fenêtre/instance de celle-ci (US-16). Désactivé par défaut ; à activer dans Réglages → Gestes → « Clic central sur l'icône du Dock pour une nouvelle instance ».</li>
+        </ul>
+        <h4>Modifié</h4>
+        <ul>
+          <li>Icône de l'application restaurée (Dock/Finder/bundle <code>.app</code>), avec un nouveau design (<code>assets/logo.png</code>) à la place de celle retirée en 3.1.0 pour des raisons de marque déposée.</li>
+          <li>Les builds de release sont désormais signés avec une identité payante « Developer ID Application » et notarisés+agrafés (stapled), si bien qu'une machine n'ayant jamais exécuté cette application ne voit plus l'avertissement « développeur non identifié » de Gatekeeper — voir la section « Notarization » de <code>DEVELOPMENT.md</code>.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Un clic central sur l'icône du Dock du Finder alors que le Finder était déjà lancé (c'est-à-dire pratiquement toujours) échouait purement et simplement avec « L'application « Finder.app » n'a pas pu être ouverte. » au lieu d'ouvrir une nouvelle fenêtre (US-16). Un clic central sur l'icône du Dock d'une application déjà lancée appuie désormais directement sur l'élément de menu « New Window » de cette application via l'API Accessibilité lorsqu'elle en possède un (couvre le Finder et la plupart des applications basées sur des fenêtres, par ex. iTerm2), plutôt que de forcer une nouvelle instance ; les applications sans un tel élément de menu (par ex. les applications basées sur des documents comme TextEdit) ouvrent toujours une nouvelle instance comme auparavant.</li>
+          <li>Un clic central sur l'icône du Dock d'iTerm2 lançait tout un nouveau processus lourd (son propre démon shell/session) par clic au lieu d'une simple nouvelle fenêtre dans l'application déjà ouverte (US-16) ; corrigé par le même appui sur l'élément de menu « New Window » décrit ci-dessus.</li>
+          <li>Un clic central sur une icône du Dock pouvait laisser le menu contextuel de l'icône du Dock ouvert à l'écran à côté de la nouvelle fenêtre/instance (US-16) ; le clic central est désormais consommé lorsque cette fonctionnalité agit dessus.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.2.0 <span class="changelog-date">2026-07-11</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Vérificateur de mise à jour optionnel (Réglages → Général → « Rechercher des mises à jour », désactivé par défaut). Une fois activé, vérifie le dépôt de release public à la recherche d'une nouvelle version 5 minutes après le lancement puis une fois par jour ; si une version est trouvée, affiche une boîte de dialogue avec un bouton « Télécharger » pointant directement vers le nouveau <code>.dmg</code>.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.1.0 <span class="changelog-date">2026-07-09</span></h3>
+        <h4>Modifié</h4>
+        <ul>
+          <li>Retrait temporaire de l'icône personnalisée de l'application ajoutée en 3.0.0 (son design intégrait la silhouette du logo Apple, un possible problème de marque déposée) ; l'application revient désormais à l'icône par défaut générée par macOS en attendant qu'un nouveau design soit prêt.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>3.0.0 <span class="changelog-date">2026-07-09</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Fenêtres exclues (réglages) : une liste de motifs regex comparés au nom d'une application — toute application de la liste ne peut jamais être déplacée ni redimensionnée. Les entrées sont normalement ajoutées via « Ajouter depuis les fenêtres ouvertes… », un sélecteur listant les applications actuellement ouvertes qui génère un motif de correspondance exacte (par ex. <code>^Calculator$</code>) pour celle choisie ; chaque motif reste ensuite modifiable en texte brut (« Ajouter un motif » ajoute une ligne vide), les regex invalides s'affichent en rouge sans rien bloquer.</li>
+          <li>Console de débogage : un bouton « Verrouillage du défilement ». Désactivé (par défaut, persistant) garde la console défilée jusqu'à la ligne la plus récente à chaque nouvelle entrée, comme auparavant. Activé permet de faire défiler librement l'historique sans être ramené en bas à chaque nouvelle ligne de journal.</li>
+          <li>« Le focus suit la souris » affiche désormais un avertissement unique (« Le focus suit la souris est expérimental… », avec une case « Ne plus afficher ») la première fois qu'il est activé dans les réglages, expliquant qu'il repose sur un mécanisme macOS non documenté et peut se comporter de manière imprévisible dans certaines applications. Le README le mentionne désormais aussi explicitement plutôt que de le sous-entendre seulement. L'onglet « Le focus suit la souris » affiche en outre cet avertissement en permanence (pas seulement une fois), donc visible à chaque ouverture de cet onglet, pas seulement à la première utilisation.</li>
+        </ul>
+        <h4>Modifié</h4>
+        <ul>
+          <li>Projet renommé : <strong>KDEMoverSizerMacOS</strong> → <strong>XDragMover</strong>. Affecte le slug/remote du projet GitLab, le projet/les cibles/le schéma Xcode, les deux identifiants de bundle (désormais <code>com.example.XDragMover</code>/<code>...Tests</code>), ainsi que chaque référence dans le code source/la documentation/les scripts. Comme pour le renommage précédent (2.0.0), le changement d'identifiant de bundle signifie que les installations existantes perdent leurs réglages persistés (nouveau domaine <code>UserDefaults</code>) et doivent réaccorder une fois l'autorisation Accessibilité après la mise à jour. Changement cassant pour les installations existantes, d'où un saut de version majeure lors de la release.</li>
+          <li>Icône de l'application remplacée par un nouveau design combinant la silhouette arc-en-ciel du logo Apple, le « X » de X.Org (depuis <code>assets/X.Org_Logo.png</code>) et la croix de flèches de déplacement, régénérée dans toutes les tailles <code>mac</code> idiom (16–1024 px).</li>
+          <li>Fenêtre des réglages réorganisée en onglets (Général, Gestes, Fenêtres exclues, Le focus suit la souris, À propos) via un contrôle segmenté, au lieu d'une longue liste défilante empilant verticalement chaque section.</li>
+          <li>« À propos de XDragMover » (barre des menus) ouvre désormais l'onglet À propos de la fenêtre des réglages (dernier onglet) au lieu d'une alerte modale séparée — le bouton « Afficher la console de débogage » a déménagé avec lui. Cliquer sur « À propos » alors que les réglages sont déjà ouverts sur un autre onglet bascule vers À propos, plutôt que de rester sur l'onglet affiché à ce moment-là.</li>
+          <li>Licence : ajout de <code>LICENSE</code> (GPLv3) et <code>LICENSING.md</code> expliquant l'arrangement de double licence qui garde possible une future publication sur l'Apple App Store ; Ralf Hartmann crédité comme auteur dans le README et la chaîne de copyright de l'application.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Le bouton « Verrouillage du défilement » de la console de débogage avait la même apparence (fond gris neutre) qu'il soit activé ou non, seul le minuscule glyphe de cadenas changeait — facile à manquer, donc il paraissait inactif même engagé. Il se remplit désormais de la couleur d'accent quand il est verrouillé, comme le font les autres boutons bascule de barre d'outils macOS pour indiquer un état actif/enfoncé.</li>
+          <li>Fenêtre des réglages : le premier élément (« Démarrer à l'ouverture de session ») et les boutons Annuler/OK avaient fini par se retrouver collés aux bords supérieur/inférieur de la fenêtre à mesure que des sections s'ajoutaient, car tout partageait une seule pile à hauteur fixe, non défilante. Les sections des réglages défilent désormais indépendamment dans la fenêtre, avec Annuler/OK épinglés dans un pied de page toujours entièrement rembourré sous un séparateur — les deux extrémités conservent leur espacement prévu, quelle que soit la quantité de contenu au-dessus.</li>
+          <li>Le curseur de délai pour le focus qui suit la souris était difficile à positionner précisément — son pas de 10 ms tassait 95 positions discrètes dans un contrôle de glissement étroit, facile à dépasser. Ajout d'un <code>Stepper</code> à côté pour un ajustement exact par clic ou maintien de ±10 ms ; le curseur reste disponible pour un positionnement grossier rapide.</li>
+          <li>Le déplacement/redimensionnement (et le focus qui suit la souris) restaient silencieusement cassés pendant toute une session si l'autorisation Accessibilité n'était pas encore accordée au moment exact du lancement — une situation de compétition courante avec l'invite système, et garantie après tout changement d'identifiant de bundle (par ex. le renommage ci-dessus), puisque cela exige toujours de réaccorder l'accès depuis zéro. Les event taps ne tentaient de démarrer qu'une seule fois, au lancement ; un accès accordé quelques instants plus tard n'était jamais remarqué, même si l'indicateur de statut de la fenêtre de débogage affichait correctement « accordé ». <code>AccessibilityPermissionManager</code> signale désormais les changements de confiance (<code>onTrustedChange</code>), et l'application retente alors de démarrer chaque tap activé — accorder l'accès à tout moment fait désormais fonctionner immédiatement le déplacement/redimensionnement/focus qui suit la souris, sans relancement nécessaire.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.2.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>« Quitter » demande désormais une confirmation (« Quitter KDEMoverSizerMacOS ? » / « Le déplacement de fenêtre, le redimensionnement et le focus qui suit la souris cesseront de fonctionner jusqu'à ce que vous la relanciez. » avec des boutons Quitter/Annuler) au lieu de se terminer immédiatement — cliquer accidentellement sur Quitter ou son raccourci <code>⌘Q</code> ne tue plus silencieusement le déplacement/redimensionnement de fenêtre sans possibilité d'annuler.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.1.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Véritable icône d'application (Dock/Finder/bundle <code>.app</code>) : un <code>KDEMoverSizerMacOS/Assets.xcassets/AppIcon.appiconset</code> intégré au projet Xcode via <code>ASSETCATALOG_COMPILER_APPICON_NAME</code>, généré dans toutes les tailles <code>mac</code> idiom requises (16–1024 px) à partir de <code>assets/KDE_Window-Sizer-for-macOS_256px.png</code>. Auparavant l'application n'avait aucune icône personnalisée. L'icône de l'élément de statut de la barre des menus (un SF Symbol) reste inchangée.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>2.0.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Modifié</h4>
+        <ul>
+          <li>Projet renommé : <strong>KDESizeMoverMac</strong> → <strong>KDEMoverSizerMacOS</strong>. Affecte le slug/remote du projet GitLab, le projet/les cibles/le schéma Xcode, les deux identifiants de bundle, ainsi que chaque référence dans le code source/la documentation/les scripts. Le changement d'identifiant de bundle signifie que les installations existantes perdent leurs réglages persistés (nouveau domaine <code>UserDefaults</code>) et doivent réaccorder une fois l'autorisation Accessibilité après la mise à jour — un coût ponctuel du renommage, pas une régression. Changement cassant pour les installations existantes, d'où le saut de version majeure.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.1.1 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Les fenêtres Réglages et Journal de débogage ne passaient pas de manière fiable au premier plan réel — en tant qu'application uniquement barre des menus (<code>.accessory</code>), KDEMoverSizerMacOS n'est jamais l'application active, donc <code>makeKeyAndOrderFront</code> seul pouvait laisser l'une ou l'autre fenêtre derrière une autre application réellement active. Les deux appellent désormais d'abord <code>NSApp.activate(ignoringOtherApps: true)</code>, comme le correctif déjà nécessaire pour la boîte de dialogue À propos pour la même raison.</li>
+          <li>L'icône du Dock apparaît désormais exactement lorsque la fenêtre Réglages ou Journal de débogage est ouverte (en plus de toujours s'afficher au lancement avec <code>--debug</code>), au lieu de ne jamais apparaître hors du mode <code>--debug</code>. Cela signifie aussi que cliquer sur l'icône du Dock pendant qu'elle est affichée ramène les Réglages au premier plan, de la même manière que relancer l'application le fait déjà.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.1.0 <span class="changelog-date">2026-07-06</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Véritable fenêtre de réglages (US-8) : « Démarrer à l'ouverture de session », l'activation/désactivation du focus qui suit la souris (US-4) et son délai (US-5 partiel) sont désormais tous modifiables depuis une vraie boîte de dialogue de réglages plutôt que seulement via des valeurs par défaut dans le code. Persisté avec <code>UserDefaults</code> (survit à la désinstallation de l'application) et versionné pour de futures migrations.</li>
+          <li>Bouton « Afficher la console de débogage » dans la boîte de dialogue À propos, permettant d'ouvrir la fenêtre du journal de débogage sans lancer avec <code>--debug</code>.</li>
+          <li>Atténuation pour les applications (confirmé : Firefox) qui se remettent elles-mêmes au premier plan après que le focus qui suit la souris leur donne l'entrée — voir <code>USER_STORIES.md</code> et la section « Optional: yabai-assisted window-order correction » de <code>DEVELOPMENT.md</code>.</li>
+          <li><code>BACKLOG.md</code> et US-9 (changeur de fenêtres) ajoutés à <code>USER_STORIES.md</code>.</li>
+          <li>Interrupteurs de réglages indépendants pour le déplacement de fenêtre (US-1) et le redimensionnement de fenêtre (US-2), afin que chaque geste puisse être désactivé séparément.</li>
+          <li>Touche de modification déplacement/redimensionnement configurable (<code>GestureModifier</code>) : toute combinaison de Command/Option/Control/Shift, Shift seule exclue, remplaçant le <code>⌘</code> auparavant codé en dur. La valeur par défaut reste Command.</li>
+          <li>Boutons OK/Annuler dans la fenêtre des réglages : OK la ferme en conservant les modifications ; Annuler rétablit chaque réglage (y compris « Démarrer à l'ouverture de session ») à son état au moment de l'ouverture de la boîte de dialogue.</li>
+          <li>Nouveaux réglages par défaut : le focus qui suit la souris est désormais désactivé par défaut (était activé) ; le déplacement et le redimensionnement restent activés par défaut.</li>
+          <li><code>DEVELOPMENT.md</code> : une politique « Changing existing tests », et un nouveau <code>TEST_CHANGELOG.md</code> suivant spécifiquement les modifications des tests existants (séparé de ce fichier, qui ne couvre que le comportement visible par l'utilisateur).</li>
+          <li>Relancer l'application alors qu'elle est déjà en cours d'exécution (par ex. double-cliquer à nouveau dessus dans le Finder/Launchpad) affiche désormais la fenêtre des réglages au lieu de ne rien faire (US-10).</li>
+          <li>« Masquer de la barre des menus » (US-11) : un élément de menu et une case à cocher correspondante dans les réglages qui masquent entièrement l'élément de statut ; relancer l'application (US-10) est le moyen de faire revenir les réglages et de le désactiver à nouveau.</li>
+          <li><code>USER_STORIES.md</code> : documentation d'une nouvelle US-12, pas encore implémentée — une liste d'exclusion par application pour le focus qui suit la souris.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Basculer « Démarrer à l'ouverture de session » depuis l'élément de la barre des menus ne laissait plus la case à cocher de la boîte de dialogue des réglages obsolète — la fenêtre des réglages est désormais recréée à neuf à chaque ouverture au lieu d'être mise en cache pour toute la session de l'application.</li>
+          <li>Le contenu de la fenêtre des réglages avait dépassé sa taille fixe, coupant les rangées du haut (« Démarrer à l'ouverture de session ») et du bas (OK/Annuler) au ras des bords de la fenêtre. Son cadre est désormais dimensionné généreusement selon la hauteur minimale réellement mesurée du contenu.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.0.1 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>US-3 : le focus suit la souris, étape 1 — la fenêtre sous la souris reçoit une véritable entrée clavier/souris après 150 ms d'immobilité, sans être remontée au-dessus des autres fenêtres. Implémenté via un mécanisme WindowServer privé/non documenté porté depuis le gestionnaire de fenêtres yabai, car l'attribut public <code>AXFocused</code> seul ne redirige pas l'entrée entre applications ; revient à <code>AXFocused</code> si ce mécanisme venait à être indisponible.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Le focus qui suit la souris ne ciblait pas de manière fiable la bonne fenêtre lorsque son application avait déjà plusieurs fenêtres ouvertes — restauration de la gestion du changement de fenêtre au sein d'une même application de yabai, perdue lors du portage initial.</li>
+          <li>Latence d'activation du focus qui suit la souris réduite de jusqu'à 350 ms à moins de 200 ms (délai d'immobilité de 150 ms + intervalle de sondage de 20 ms, tous deux réduits depuis 300 ms/50 ms).</li>
+          <li>Correction de notes obsolètes dans <code>USER_STORIES.md</code> (la liste des éléments de la barre des menus omettait « À propos » ; la lacune « ne se suspend pas quand un menu est ouvert » ne mentionnait pas US-3).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>1.0.0 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Élément de menu « À propos » : une alerte modale avec le nom de l'application, la version, le build et le copyright — pas le panneau « À propos » standard partagé d'AppKit, qui d'après les tests ne passe pas de manière fiable au premier plan pour une application uniquement barre des menus (<code>.accessory</code>).</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li><code>Info.plist</code> lit désormais <code>CFBundleShortVersionString</code>/<code>CFBundleVersion</code> depuis les réglages de build au lieu de valeurs codées en dur et obsolètes.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.8 <span class="changelog-date">2026-07-05</span></h3>
+        <p class="changelog-nofunc">Aucun changement fonctionnel (juste un changement de version).</p>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.7 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>US-1 : déplacer n'importe quelle fenêtre avec <code>⌘</code>+glisser (clic gauche).</li>
+          <li>US-2 : redimensionner n'importe quelle fenêtre avec <code>⌘</code>+glisser (clic droit), ancré au coin le plus proche.</li>
+          <li>Élément de statut de la barre des menus (Démarrer à l'ouverture de session, Quitter) et icône du Dock cachée hors du mode <code>--debug</code>.</li>
+          <li>Journalisation de débogage des événements de début/fin de déplacement/redimensionnement (et, pour le redimensionnement, quel coin a été saisi).</li>
+          <li>Les cibles <code>make install</code>, <code>make uninstall</code> et <code>make dmg</code>.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Signature Xcode : sélection d'une véritable équipe Apple Development pour la signature automatique.</li>
+          <li>L'application quittait de manière inattendue en basculant « Démarrer à l'ouverture de session ».</li>
+          <li>L'application quittait de manière inattendue en interagissant avec le menu déroulant de l'élément de la barre des menus (hors mode débogage).</li>
+          <li>Réactivité du redimensionnement : appels redondants à l'API Accessibilité ignorés et mises à jour du glissement regroupées sur la boucle d'exécution principale.</li>
+          <li><code>make dmg</code> : le volume monté était invisible dans le Finder (d'abord à cause de <code>-nobrowse</code>, puis à cause d'un <code>-mountpoint</code> personnalisé hors de <code>/Volumes/</code>).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.6 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Signature de code du package : un certificat auto-signé ne satisfait pas les vérifications d'autorisation Accessibilité de TCC ; passage à une signature basée sur l'équipe (Team).</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.5 <span class="changelog-date">2026-07-05</span></h3>
+        <p class="changelog-nofunc">Aucun changement fonctionnel (juste un changement de version).</p>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.4 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>CI : construit un package à chaque push vers <code>dev</code>, versionné avec le SHA du commit.</li>
+        </ul>
+        <h4>Documentation</h4>
+        <ul>
+          <li>Documentation de la translocation d'application (App Translocation) comme cause d'invites d'autorisation répétées.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.3 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Les packages publiés redemandaient l'accès Accessibilité à chaque installation.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.2 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Corrigé</h4>
+        <ul>
+          <li><code>make package</code>/<code>make release</code> échouait à la construction à cause d'un problème de nettoyage du répertoire temporaire.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
+        <h3>0.1.1 <span class="changelog-date">2026-07-05</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>Squelette initial du projet : demande d'autorisation Accessibilité, fenêtre de débogage, détection de la fenêtre sous la souris, tests unitaires.</li>
+          <li><code>Makefile</code> (<code>build</code>/<code>test</code>/<code>clean</code>/<code>all</code>).</li>
+          <li>Workflow de branches git <code>main</code>/<code>dev</code>/<code>feature</code>/<code>bugfix</code> avec un processus de release scripté (<code>make release</code>).</li>
+          <li>Pipeline GitLab CI (test au push vers <code>dev</code>, release au push vers <code>main</code>).</li>
+          <li><code>make run</code> et l'option <code>--debug</code>.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Nouvelle demande d'autorisation Accessibilité à chaque reconstruction/exécution.</li>
+          <li>Effets de bord au démarrage (invite d'autorisation, event taps) se produisant lorsque l'application est hébergée par XCTest.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <p>
+        <a href="index.fr.html">← Retour à l'accueil</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="index.fr.html">Accueil</a> |
+    <a href="architecture.fr.html">Architecture</a> |
+    <a href="disclaimer.fr.html">Avertissement</a> |
+    <a href="privacy.fr.html">Confidentialité</a> |
+    <a href="imprint.fr.html">Mentions légales</a>
+  </footer>
+</body>
+</html>

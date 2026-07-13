@@ -258,6 +258,56 @@ th {
   text-align: center;
 }
 
+/* Changelog */
+.changelog-list {
+  max-width: 800px;
+}
+
+.changelog-entry {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.changelog-entry:last-child {
+  border-bottom: none;
+}
+
+.changelog-entry h3 {
+  font-size: 1.3rem;
+  margin: 0 0 12px;
+}
+
+.changelog-date {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.changelog-entry h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  margin: 16px 0 6px;
+}
+
+.changelog-entry ul {
+  margin: 0;
+  padding-left: 1.3em;
+}
+
+.changelog-entry li {
+  margin-bottom: 8px;
+}
+
+.changelog-nofunc {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 8px 0 0;
+}
+
 footer {
   text-align: center;
   margin: 40px 0 60px;
