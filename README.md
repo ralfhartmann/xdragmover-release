@@ -2,6 +2,8 @@
 
 A lightweight macOS menu bar utility that brings KDE/Linux-style window manipulation shortcuts to the Mac. It monitors global keyboard and mouse events and lets you move and resize any window from anywhere on its surface, without needing to grab the title bar or a resize handle. It can also optionally give focus to the window under the mouse cursor after the cursor has come to rest for a configurable amount of time.
 
+Website (downloads, architecture overview): **[xdragmover.de](https://xdragmover.de)**
+
 ## Motivation
 
 On many Linux desktop environments (KDE, GNOME, etc.), holding a modifier key (typically `Alt` or the `Super`/`Meta` key) while pressing the mouse anywhere inside a window lets you drag it around, and holding the same modifier with the right mouse button lets you resize it from the nearest corner. macOS has no built-in equivalent. XDragMover recreates this familiar, efficient workflow on macOS, defaulting to the `Command (⌘)` key as the modifier — configurable in Settings (see "Configuration" below).
@@ -52,6 +54,10 @@ Settings' General tab has a "Check for Updates" checkbox, off by default since t
 ### 7. Middle-click a Dock icon for a new instance
 
 Settings' Gestures tab has a "Middle-Click Dock Icon for New Instance" checkbox, off by default (US-16). When enabled, middle-clicking an app's Dock icon opens a new window/instance of that app, resolved via the Dock's own Accessibility hierarchy and opened with `NSWorkspace`. Middle-clicks anywhere outside an app's Dock icon are left completely untouched.
+
+### 8. Localization
+
+The app's UI (Settings, menu bar, alerts) is localized into German, Russian, and French via an Xcode String Catalog (`XDragMover/Localizable.xcstrings`), following the system language automatically. Any other language falls back to English.
 
 ## How It Works
 
