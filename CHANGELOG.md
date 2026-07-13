@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.1] - 2026-07-13
+
+### Fixed
+
+- An empty "XDragMover Settings" window could appear unrequested at
+  launch — most reliably when launched as a login item, occasionally on
+  a manual relaunch too. Caused by SwiftUI auto-showing the app's
+  placeholder `Settings` scene and/or AppKit's window-state restoration
+  reopening a previously-open window. Fixed by closing any window
+  AppKit/SwiftUI opens on its own at launch.
+
 ## [3.4.0] - 2026-07-13
 
 ### Added
