@@ -5,6 +5,30 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2026-07-14
+
+### Fixed
+
+- The menu bar icon's dropdown menu could stop opening entirely after
+  launch — a click reached the icon, but nothing appeared. Root cause was
+  `closeStrayWindows()` (added in 3.4.1 to fix an unrelated empty-Settings-
+  window bug): its deferred cleanup pass ran after the status item was
+  installed and closed the status item's own private window right along
+  with the actual stray windows it was meant to catch, silently breaking
+  the icon's click-to-menu handling from then on. The earlier 3.6.0 "fix"
+  for this (switching to a manual target/action click handler) did not
+  address the real cause and has been superseded by this one.
+
+### Removed
+
+- Snap-window-to-screen-edge-on-drag-release (US-20), added in 3.5.0. On a
+  real multi-monitor setup, the "screen edge" a user visually aims for is
+  often the seam between two adjacent monitors, which isn't a real edge in
+  a per-monitor-rectangle model — the feature felt broken/unpredictable in
+  practice. Pulled out to revisit later with a better notion of what counts
+  as a snappable edge; the "Snap Window to Screen Edge on Release" toggle
+  and its Gestures-tab setting no longer exist.
+
 ## [3.6.0] - 2026-07-14
 
 ### Added
