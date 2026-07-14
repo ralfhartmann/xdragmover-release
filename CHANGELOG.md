@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-07-13
+
+### Added
+
+- Snap a window to a screen half or quarter by releasing it near a screen
+  edge while moving it (US-20): hold it within 5px of an edge for 1 second,
+  then release — the middle third of the edge snaps to that edge's half,
+  the two outer thirds snap to the nearest corner's quarter. Off by
+  default; toggle in Settings → Gestures → "Snap Window to Screen Edge on
+  Release".
+
 ## [3.4.1] - 2026-07-13
 
 ### Fixed
