@@ -59,10 +59,6 @@ Settings' Gestures tab has a "Middle-Click Dock Icon for New Instance" checkbox,
 
 The app's UI (Settings, menu bar, alerts) is localized into German, Russian, and French via an Xcode String Catalog (`XDragMover/Localizable.xcstrings`), following the system language automatically. Any other language falls back to English.
 
-### 9. Snap a window to a screen half/quarter on drag release
-
-Settings' Gestures tab has a "Snap Window to Screen Edge on Release" checkbox, off by default (US-20). When enabled, while moving a window (feature 1 above), holding the mouse within 10px of a screen edge for 1 second and then releasing snaps the window to that edge's half (if released in the middle third of the edge, lengthwise) or the nearest corner's quarter (if released in one of the two outer thirds). Small jitter while holding still doesn't reset the wait; moving the mouse for real does; releasing anywhere else just drops the window normally, unchanged from before.
-
 ## How It Works
 
 XDragMover runs as a background (menu bar) application that installs a global event monitor (via the macOS Accessibility / Quartz Event Services APIs) to observe keyboard modifier state and mouse button/movement events system-wide. When it detects a qualifying `⌘`+click gesture, it identifies the target window under the cursor via the Accessibility API and drives its position or frame directly using `AXUIElement` position/size attributes, tracking mouse deltas for the duration of the gesture.
@@ -159,7 +155,6 @@ Available from the menu bar item's "Settings…" (`SettingsView.swift`), backed 
 | Excluded window patterns | Regex patterns (matched against app name) identifying apps that can never be moved or resized (US-15). Add via the "Add from Open Windows…" picker or type a pattern directly | ✅ Implemented |
 | Check for Updates | Checks the public release repo for a newer version 5 minutes after launch, then once a day; shows a dialog with a download link if one is found. Default: off — this is the app's only networking code | ✅ Implemented |
 | Middle-Click Dock Icon for New Instance | Middle-clicking an app's Dock icon opens a new window/instance of it (US-16). Default: off | ✅ Implemented |
-| Snap Window to Screen Edge on Release | Releasing a dragged window near a screen edge, after a 1-second dwell within 10px of it, snaps it to a half or quarter of the screen (US-20). Default: off | ✅ Implemented |
 
 OK closes the dialog keeping any changes made; Cancel reverts every setting (including Start at Login) back to what it was when the dialog was opened. Not (yet) exposed as a pane/section inside System Settings.app — just a standalone dialog.
 
