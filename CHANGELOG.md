@@ -5,6 +5,28 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2026-07-14
+
+### Added
+
+- "Quit XDragMover" is now also available directly in the Settings window
+  (previously only in the menu bar item), with the same confirmation
+  prompt.
+
+### Fixed
+
+- The menu bar icon could sometimes not react to a click at all (no
+  highlight, no menu) — most noticeable right after launch, especially as
+  a login item. Caused by the app not yet being fully activated in the
+  window server session; fixed by activating once before installing the
+  status item.
+- Edge-snap-on-release (US-20) rarely triggered in real use: the dwell
+  ("stationary") check required the mouse to report the exact same
+  sub-pixel position across the whole 1-second hold, which real mouse/
+  trackpad input essentially never does. Small jitter no longer resets the
+  dwell clock. Also increased the edge-proximity threshold from 5px to
+  10px, matching typical cursor precision near a screen edge.
+
 ## [3.5.0] - 2026-07-13
 
 ### Added
