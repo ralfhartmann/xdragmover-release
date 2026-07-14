@@ -44,6 +44,18 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.7.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>Le menu déroulant de l'icône de la barre des menus pouvait complètement cesser de s'ouvrir après le lancement — un clic atteignait l'icône, mais rien n'apparaissait. La cause était closeStrayWindows() (ajouté en 3.4.1 pour un bug sans rapport) : son passage de nettoyage différé fermait la fenêtre privée de l'élément de statut en même temps que les véritables fenêtres orphelines qu'il visait, cassant silencieusement la gestion du clic vers le menu de l'icône à partir de là.</li>
+        </ul>
+        <h4>Supprimé</h4>
+        <ul>
+          <li>L'ancrage au bord de l'écran au relâchement (ajouté en 3.5.0). Sur une vraie configuration multi-écrans, le « bord d'écran » visé visuellement par l'utilisateur est souvent la jointure entre deux moniteurs adjacents, ce qui n'est pas un vrai bord dans un modèle par rectangle de moniteur — la fonctionnalité semblait cassée/imprévisible en pratique. Retirée pour l'instant, à revoir plus tard avec une meilleure notion de ce qui compte comme bord ancrable.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
         <h4>Ajouté</h4>
         <ul>

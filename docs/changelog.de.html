@@ -44,6 +44,18 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.7.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Das Dropdown-Menü des Menüleisten-Symbols konnte nach dem Start komplett aufhören zu funktionieren — ein Klick erreichte das Symbol, aber es erschien nichts. Ursache war closeStrayWindows() (in 3.4.1 für einen anderen Fehler eingeführt): dessen verzögerter Aufräumdurchlauf schloss das private Fenster des Statuselements zusammen mit den eigentlich gemeinten verwaisten Fenstern, wodurch die Klick-Menü-Behandlung des Symbols von da an stillschweigend kaputt war.</li>
+        </ul>
+        <h4>Entfernt</h4>
+        <ul>
+          <li>Das Andocken am Bildschirmrand beim Loslassen (aus 3.5.0). Bei einem echten Mehrschirm-Setup ist der „Bildschirmrand", auf den ein Nutzer visuell zielt, oft die Naht zwischen zwei benachbarten Monitoren, was in einem Pro-Monitor-Rechteck-Modell kein echter Rand ist — das Feature fühlte sich in der Praxis kaputt/unvorhersehbar an. Vorerst wieder entfernt, um später mit einem besseren Verständnis davon, was als andockbarer Rand zählt, erneut angegangen zu werden.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
         <h4>Hinzugefügt</h4>
         <ul>

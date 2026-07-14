@@ -44,6 +44,18 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.7.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Fixed</h4>
+        <ul>
+          <li>The menu bar icon's dropdown menu could stop opening entirely after launch — a click reached the icon, but nothing appeared. Root cause was closeStrayWindows() (added in 3.4.1 for an unrelated bug): its deferred cleanup pass closed the status item's own private window right along with the actual stray windows it was meant to catch, silently breaking the icon's click-to-menu handling from then on.</li>
+        </ul>
+        <h4>Removed</h4>
+        <ul>
+          <li>Snap-window-to-screen-edge-on-drag-release, added in 3.5.0. On a real multi-monitor setup, the "screen edge" a user visually aims for is often the seam between two adjacent monitors, which isn't a real edge in a per-monitor-rectangle model — the feature felt broken/unpredictable in practice. Pulled out to revisit later with a better notion of what counts as a snappable edge.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
         <h4>Added</h4>
         <ul>

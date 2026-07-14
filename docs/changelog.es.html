@@ -44,6 +44,18 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.7.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Corregido</h4>
+        <ul>
+          <li>El menú desplegable del icono de la barra de menús podía dejar de abrirse por completo tras el inicio — un clic llegaba al icono, pero no aparecía nada. La causa era closeStrayWindows() (añadido en 3.4.1 para un error no relacionado): su pasada de limpieza diferida cerraba la ventana privada propia del elemento de estado junto con las verdaderas ventanas huérfanas a las que apuntaba, rompiendo silenciosamente el manejo de clic-a-menú del icono desde entonces.</li>
+        </ul>
+        <h4>Eliminado</h4>
+        <ul>
+          <li>El ajuste al borde de pantalla al soltar (añadido en 3.5.0). En una configuración real de varios monitores, el "borde de pantalla" al que el usuario apunta visualmente suele ser la unión entre dos monitores adyacentes, lo cual no es un borde real en un modelo de rectángulo por monitor — la función se sentía rota/impredecible en la práctica. Retirada por ahora, para revisarla más adelante con una mejor noción de qué cuenta como borde al que ajustarse.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
         <h4>Añadido</h4>
         <ul>
