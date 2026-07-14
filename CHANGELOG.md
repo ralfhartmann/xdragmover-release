@@ -5,6 +5,18 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - 2026-07-14
+
+### Added
+
+- Manually trigger an update check on demand (US-22), instead of only
+  waiting for the scheduled automatic check: "Check for Updates…" in the
+  menu bar item, and a "Check Now" button next to Settings' existing
+  "Check for Updates" toggle. Works independently of whether automatic
+  checks are enabled, and — unlike the silent scheduled check — always
+  reports its outcome: a newer version (same "Download"/"Later" dialog as
+  the automatic check), already up to date, or a failed check.
+
 ## [3.7.0] - 2026-07-14
 
 ### Fixed
