@@ -44,6 +44,19 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Hinzugefügt</h4>
+        <ul>
+          <li>„XDragMover beenden" ist jetzt auch direkt im Einstellungsfenster verfügbar (bisher nur im Menüleisten-Menü), mit derselben Bestätigungsabfrage.</li>
+        </ul>
+        <h4>Behoben</h4>
+        <ul>
+          <li>Das Menüleisten-Symbol reagierte manchmal überhaupt nicht auf einen Klick (kein Hervorheben, kein Menü) — am auffälligsten direkt nach dem Start, besonders als Login-Element. Behoben, indem die App einmalig aktiviert wird, bevor das Statuselement installiert wird.</li>
+          <li>Das Andocken am Bildschirmrand beim Loslassen (US-20) löste in der Praxis selten aus: Die Ruheerkennung verlangte, dass die Maus während der gesamten 1-Sekunden-Wartezeit exakt dieselbe Subpixel-Position meldet, was reale Maus-/Trackpad-Eingaben praktisch nie tun. Kleine Zitterbewegungen setzen die Wartezeit nun nicht mehr zurück. Außerdem wurde der Abstands-Schwellenwert zum Bildschirmrand von 5px auf 10px erhöht.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.5.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Hinzugefügt</h4>
         <ul>

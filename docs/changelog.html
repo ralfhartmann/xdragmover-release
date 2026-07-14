@@ -44,6 +44,19 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Added</h4>
+        <ul>
+          <li>"Quit XDragMover" is now also available directly in the Settings window (previously only in the menu bar item), with the same confirmation prompt.</li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+          <li>The menu bar icon could sometimes not react to a click at all (no highlight, no menu) — most noticeable right after launch, especially as a login item. Fixed by activating the app once before installing the status item.</li>
+          <li>Edge-snap-on-release (US-20) rarely triggered in real use: the dwell check required the mouse to report the exact same sub-pixel position for the whole 1-second hold, which real mouse/trackpad input essentially never does. Small jitter no longer resets the dwell clock. Also increased the edge-proximity threshold from 5px to 10px.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.5.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Added</h4>
         <ul>

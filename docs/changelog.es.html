@@ -44,6 +44,19 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Añadido</h4>
+        <ul>
+          <li>«Salir de XDragMover» ahora también está disponible directamente en la ventana de Ajustes (antes solo en el menú de la barra de menús), con la misma confirmación.</li>
+        </ul>
+        <h4>Corregido</h4>
+        <ul>
+          <li>El icono de la barra de menús a veces no reaccionaba en absoluto a un clic (sin resaltado, sin menú) — más notorio justo después de iniciar, especialmente como elemento de inicio de sesión. Solucionado activando la app una vez antes de instalar el elemento de estado.</li>
+          <li>El ajuste al borde de pantalla al soltar (US-20) rara vez se activaba en la práctica: la detección de quietud exigía que el ratón reportara exactamente la misma posición de subpíxel durante toda la espera de 1 segundo, algo que el ratón/trackpad reales prácticamente nunca hacen. Las pequeñas fluctuaciones ya no reinician la espera. Además, el umbral de proximidad al borde se aumentó de 5px a 10px.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.5.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Añadido</h4>
         <ul>

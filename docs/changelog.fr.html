@@ -44,6 +44,19 @@
   <main>
     <section class="changelog-list">
       <div class="changelog-entry">
+        <h3>3.6.0 <span class="changelog-date">2026-07-14</span></h3>
+        <h4>Ajouté</h4>
+        <ul>
+          <li>« Quitter XDragMover » est désormais également disponible directement dans la fenêtre des réglages (auparavant uniquement dans le menu de la barre des menus), avec la même confirmation.</li>
+        </ul>
+        <h4>Corrigé</h4>
+        <ul>
+          <li>L'icône de la barre des menus ne réagissait parfois pas du tout à un clic (pas de surbrillance, pas de menu) — surtout juste après le lancement, en particulier en tant qu'élément de connexion. Corrigé en activant l'application une fois avant d'installer l'élément de statut.</li>
+          <li>L'ancrage au bord de l'écran au relâchement (US-20) se déclenchait rarement en pratique : la détection d'immobilité exigeait que la souris signale exactement la même position au sous-pixel près pendant toute l'attente d'1 seconde, ce que les souris/pavés tactiles réels ne font pratiquement jamais. De petits tremblements ne réinitialisent plus l'attente. Le seuil de proximité au bord est aussi passé de 5px à 10px.</li>
+        </ul>
+      </div>
+
+      <div class="changelog-entry">
         <h3>3.5.0 <span class="changelog-date">2026-07-13</span></h3>
         <h4>Ajouté</h4>
         <ul>
