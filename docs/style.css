@@ -140,6 +140,20 @@ a {
   background: rgba(255, 255, 255, 0.25);
 }
 
+.button.paypal {
+  background: #ffc439;
+  color: #111111;
+}
+
+.button.paypal:hover {
+  background: #ffd66b;
+}
+
+.support-note {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
 main {
   max-width: 800px;
   margin: 0 auto;
