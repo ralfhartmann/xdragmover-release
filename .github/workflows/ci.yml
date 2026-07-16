@@ -1,0 +1,218 @@
+name: CI
+
+# Test/build/package/release pipeline for XDragMover — moved here from the
+# private ralfhartmann/xdragmover repo, which now only pushes its buildable
+# source onto this repo's dev/main branches (see xdragmover's
+# .github/workflows/sync-to-release.yml) rather than building anything
+# itself. Every commit here IS the "Corresponding Source" required by
+# GPLv3 §6, so testing/building it directly (instead of a separately
+# zipped copy) also verifies it's actually buildable.
+#
+# Behavior:
+#   - Push to `dev`  -> runs the unit test suite (`make test`), then (if
+#     tests pass) builds a notarized dev package tagged with the commit
+#     it was built from (`make package VERSION=<VERSION.md>+<short SHA>`),
+#     kept as a downloadable workflow artifact — not a formal GitHub
+#     Release, since that's reserved for actual releases from `main`.
+#   - Push to `main` -> builds a Release package (`make package`) and a
+#     .dmg installer (`make dmg`), then publishes both as downloadable
+#     assets on a GitHub Release tagged `vX.Y.Z` (version read from
+#     VERSION.md). If a release for that tag already exists (e.g. this
+#     workflow re-runs without a version bump), it's skipped rather than
+#     failing.
+#
+# Both packaging jobs require the six MACOS_CERTIFICATE_*/NOTARY_API_*
+# repository secrets described in xdragmover's DEVELOPMENT.md, "Setting up
+# GitHub Actions" — same names/values, just entered on this repo's
+# Settings -> Secrets and variables -> Actions page instead.
+
+on:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show selected Xcode version
+        run: xcodebuild -version
+      - name: Run unit tests
+        run: make test
+
+  package-dev:
+    if: github.ref == 'refs/heads/dev'
+    needs: test
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import signing certificate
+        env:
+          MACOS_CERTIFICATE_P12_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          MACOS_CI_KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CI_KEYCHAIN_PASSWORD }}
+        run: |
+          if [ -z "$MACOS_CERTIFICATE_P12_BASE64" ] || [ -z "$MACOS_CERTIFICATE_PASSWORD" ] || [ -z "$MACOS_CI_KEYCHAIN_PASSWORD" ]; then
+            echo "::error::Missing one of the MACOS_CERTIFICATE_P12_BASE64 / MACOS_CERTIFICATE_PASSWORD / MACOS_CI_KEYCHAIN_PASSWORD repository secrets. See xdragmover's DEVELOPMENT.md, 'Setting up GitHub Actions'."
+            exit 1
+          fi
+
+          CERT_PATH="$RUNNER_TEMP/xdragmover_signing.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/xdragmover-ci.keychain-db"
+
+          echo -n "$MACOS_CERTIFICATE_P12_BASE64" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "$MACOS_CI_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 1800 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          security import "$CERT_PATH" -P "$MACOS_CERTIFICATE_PASSWORD" -A \
+            -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -k "$MACOS_CI_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/[" ]//g')
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
+
+          rm -f "$CERT_PATH"
+
+      - name: Import notarization credentials
+        env:
+          NOTARY_API_KEY_P8_BASE64: ${{ secrets.NOTARY_API_KEY_P8_BASE64 }}
+          NOTARY_API_KEY_ID: ${{ secrets.NOTARY_API_KEY_ID }}
+          NOTARY_API_ISSUER: ${{ secrets.NOTARY_API_ISSUER }}
+        run: |
+          if [ -z "$NOTARY_API_KEY_P8_BASE64" ] || [ -z "$NOTARY_API_KEY_ID" ] || [ -z "$NOTARY_API_ISSUER" ]; then
+            echo "::error::Missing one of the NOTARY_API_KEY_P8_BASE64 / NOTARY_API_KEY_ID / NOTARY_API_ISSUER repository secrets. See xdragmover's DEVELOPMENT.md, 'Setting up GitHub Actions'."
+            exit 1
+          fi
+
+          NOTARY_API_KEY_PATH="$RUNNER_TEMP/xdragmover_notary_key.p8"
+          echo -n "$NOTARY_API_KEY_P8_BASE64" | base64 --decode -o "$NOTARY_API_KEY_PATH"
+
+          {
+            echo "NOTARY_API_KEY_PATH=$NOTARY_API_KEY_PATH"
+            echo "NOTARY_API_KEY_ID=$NOTARY_API_KEY_ID"
+            echo "NOTARY_API_ISSUER=$NOTARY_API_ISSUER"
+          } >> "$GITHUB_ENV"
+
+      - name: Build dev package
+        run: |
+          DEV_VERSION="$(tr -d '[:space:]' < VERSION.md)+${GITHUB_SHA::7}"
+          echo "Building dev package ${DEV_VERSION}"
+          make package VERSION="$DEV_VERSION"
+          test -f "dist/XDragMover-${DEV_VERSION}.zip"
+
+      - name: Clean up temporary keychain and notarization key
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/xdragmover-ci.keychain-db" 2>/dev/null || true
+          rm -f "$RUNNER_TEMP/xdragmover_notary_key.p8"
+
+      - name: Upload dev package as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: XDragMover-dev-package
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: macos-14
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import signing certificate
+        env:
+          MACOS_CERTIFICATE_P12_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          MACOS_CI_KEYCHAIN_PASSWORD: ${{ secrets.MACOS_CI_KEYCHAIN_PASSWORD }}
+        run: |
+          if [ -z "$MACOS_CERTIFICATE_P12_BASE64" ] || [ -z "$MACOS_CERTIFICATE_PASSWORD" ] || [ -z "$MACOS_CI_KEYCHAIN_PASSWORD" ]; then
+            echo "::error::Missing one of the MACOS_CERTIFICATE_P12_BASE64 / MACOS_CERTIFICATE_PASSWORD / MACOS_CI_KEYCHAIN_PASSWORD repository secrets. See xdragmover's DEVELOPMENT.md, 'Setting up GitHub Actions'."
+            exit 1
+          fi
+
+          CERT_PATH="$RUNNER_TEMP/xdragmover_signing.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/xdragmover-ci.keychain-db"
+
+          echo -n "$MACOS_CERTIFICATE_P12_BASE64" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "$MACOS_CI_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 1800 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          security import "$CERT_PATH" -P "$MACOS_CERTIFICATE_PASSWORD" -A \
+            -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -k "$MACOS_CI_KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/[" ]//g')
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
+
+          rm -f "$CERT_PATH"
+
+      - name: Import notarization credentials
+        env:
+          NOTARY_API_KEY_P8_BASE64: ${{ secrets.NOTARY_API_KEY_P8_BASE64 }}
+          NOTARY_API_KEY_ID: ${{ secrets.NOTARY_API_KEY_ID }}
+          NOTARY_API_ISSUER: ${{ secrets.NOTARY_API_ISSUER }}
+        run: |
+          if [ -z "$NOTARY_API_KEY_P8_BASE64" ] || [ -z "$NOTARY_API_KEY_ID" ] || [ -z "$NOTARY_API_ISSUER" ]; then
+            echo "::error::Missing one of the NOTARY_API_KEY_P8_BASE64 / NOTARY_API_KEY_ID / NOTARY_API_ISSUER repository secrets. See xdragmover's DEVELOPMENT.md, 'Setting up GitHub Actions'."
+            exit 1
+          fi
+
+          NOTARY_API_KEY_PATH="$RUNNER_TEMP/xdragmover_notary_key.p8"
+          echo -n "$NOTARY_API_KEY_P8_BASE64" | base64 --decode -o "$NOTARY_API_KEY_PATH"
+
+          {
+            echo "NOTARY_API_KEY_PATH=$NOTARY_API_KEY_PATH"
+            echo "NOTARY_API_KEY_ID=$NOTARY_API_KEY_ID"
+            echo "NOTARY_API_ISSUER=$NOTARY_API_ISSUER"
+          } >> "$GITHUB_ENV"
+
+      - name: Build Release package and .dmg
+        run: |
+          make package
+          make dmg
+
+      - name: Clean up temporary keychain and notarization key
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/xdragmover-ci.keychain-db" 2>/dev/null || true
+          rm -f "$RUNNER_TEMP/xdragmover_notary_key.p8"
+
+      - name: Create or update the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(tr -d '[:space:]' < VERSION.md)"
+          TAG="v${VERSION}"
+          ASSET_NAME="XDragMover-${VERSION}.zip"
+          DMG_NAME="XDragMover-${VERSION}.dmg"
+
+          test -f "dist/${ASSET_NAME}"
+          test -f "dist/${DMG_NAME}"
+
+          # A same-content copy under a fixed name so the website can link
+          # to it permanently via releases/latest/download/XDragMover.dmg,
+          # the same trick already used for XDragMover.dmg as a stable URL.
+          cp "dist/${DMG_NAME}" "dist/XDragMover.dmg"
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists — uploading/replacing assets."
+            gh release upload "$TAG" "dist/${ASSET_NAME}" "dist/${DMG_NAME}" "dist/XDragMover.dmg" \
+              --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            echo "Creating release $TAG"
+            gh release create "$TAG" "dist/${ASSET_NAME}" "dist/${DMG_NAME}" "dist/XDragMover.dmg" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "XDragMover $TAG" \
+              --notes "See CHANGELOG.md for details. Corresponding Source (GPLv3 §6): the tree at this tag."
+          fi
